@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<div id="app"></div>
+	
+
+	<script>
+		class MyVue{
+			constructor(props) {
+				this.data = props.data;
+				this.el = document.querySelector(el);
+
+			};
+
+			
+
+		}
+		(function(document){
+
+			var vue = new MyVue({
+				el:'#app',
+				data:{
+					msg:'畅哥聊技术'					
+				}
+			});
+
+		})(document)
+	</script>
+	
+
+</body>
+</html>

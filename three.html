@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>基于WebAudio和ThreeJs实现音乐可视化</title>
+	<style>
+		*{margin: 0;padding: 0;}
+
+		body{
+			font-size: 0;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		(function(document){
+
+			class ZmitiAudio{
+				constructor(props) {
+					this.init();
+					this.viewW = window.innerWidth;
+					this.viewH = window.innerHeight;
+				}	
+				init(){
+					var {viewW,viewH} = this;
+					var scene = new THREE.Scene();
+					this.scene = scene;
+					var camera = new THERE.THREE.PerspectiveCamera( 70, viewW / viewH, 1, 1000 );
+					this.camera = camera;
+
+					var renderer = new THREE.WebGLRenderer();
+					renderer.setSize(viewW,viewH);
+					document.body.appendChild(renderer.domElement);
+
+				}
+			}
+
+			new ZmitiAudio();
+
+		})(document);
+	</script>
+</body>
+</html>

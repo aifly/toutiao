@@ -26,21 +26,17 @@
 					this.x = option.x || 0;
 					this.y = option.y || 0;
 					this.r = option.r || 2;
-					this.x3d = 0;
-				    this.y3d = 0;
-				    this.z3d = 0;
-				    this.viewH = window.innerHeight;
-					/*this.speedX = - Math.random()*2 - 2;
-					this.speedY = - Math.random() * 30;*/
-					this.vx = Math.random() - .5> 0 ? Math.random()*1 : -Math.random()*1;
-				    this.vy = Math.random() * 5  + 1;
-				    this.vz = 0;
+					this.viewH = option.viewH || window.innerHeight;
+					this.viewW = option.viewW || window.innerWidth;
+					this.isMove = Math.random()>.8;
+					
 				    this.scaleX = option.scaleX || 1;
     				this.scaleY = option.scaleY || 1;
-					this.g = 2;
 					this.fillStyle = option.fillStyle || 'red';
+					
 
 				}
+
 				render(context){
 
 					var {x , y ,r,speedX,speedY,g,fillStyle,scaleX, scaleY} = this;
@@ -55,34 +51,32 @@
 					return this;
  				}
 
- 				scaleAnimate(context){
-
- 					this.scaleX +=.01;
- 					this.scaleX = this.scaleX>1?1:this.scaleX;
- 					this.scaleY = this.scaleX;
- 					//this.render(context);
-
- 				}
- 				posAnimate(context,target){ //target 目标点。
- 					
- 					this.x += this.vx;
- 					this.y += this.vy;
- 					this.render(context);
- 					if(this.y  + this.r > this.viewH){
- 						this.y = Math.random() * 400 * -1 - 100;
- 						this.vy = Math.random() * 5 + 1;
-
- 					}
- 				}
+ 			 
+				randomAnimate(context){
+					var {viewW ,viewH, isToHuaWei} = this;
+					var is = Math.random() > .5 ? 1: -1;
+					var is1 = Math.random() > .5 ? 1: -1;
+					var point = {
+						x:this.x + (Math.random() * (this.x - 10) * is),
+						y:this.y +(Math.random()* (this.y - 10) * is1)
+					}
+					var duration = 2000;
+					this.isMove && (this.tween = new TWEEN.Tween(this)
+					.to({ x:point.x, y:point.y }, Math.random() * duration*4 + duration  )
+					.easing(TWEEN.Easing.Exponential.InOut).delay(Math.random() * duration*2 )
+					.onUpdate(()=>{
+						this.render(context);
+					}).onComplete(()=>{
+						!isToHuaWei &&  this.randomAnimate(context);
+					}).start());
+				}
 			}
-
 
 			var util = {
 				viewW:window.innerWidth,
 				viewH:window.innerHeight ,
 				init(){
 					this.setSize();
-					
 				},
 				setSize(){
 					var canvas = document.querySelector('#canvas');
@@ -92,19 +86,13 @@
 					canvas.width = this.viewW;
 					canvas.height = this.viewH;
 					var s = this;
-
 					var offCanvas = document.createElement('canvas');
 					offCanvas.width = this.viewW;
 					offCanvas.height = this.viewH;
 
 					var offContext = offCanvas.getContext('2d');
 					this.offContext = offContext;
-
-					var t = setInterval(()=>{
-					},1000)
-						this.drawClock();
-
-					 
+					this.createParticals();
 				},
 
 				pointsPos:[],
@@ -115,7 +103,7 @@
 
 
 
-				drawClock(){
+				createParticals(){
 
 					
 				
@@ -132,14 +120,10 @@
 						lingrad.addColorStop(1,'#fd2508');
 					offContext.fillStyle = lingrad;
 
-					var text = '华为加油！'
+					var text = '华为加油!'
 
 					offContext.fillText(text,startX,20);
-
-				
-
 					var imgData = offContext.getImageData(0,0,viewW,viewH);
-
 					var {width,height,data} = imgData;
 
 					var margin = 4;
@@ -159,67 +143,64 @@
 							}
 						}
 					}
-
-					 
-
-					var f = viewH /12;
-
-					 
 					pointsPos.forEach((p,i)=>{
 						var {x,y,r,g,b,a} = p;
-						 
-
-
 						var point = new Point({
-							x,//:Math.random()*viewW,
-							y,//:-Math.random()*500 - 100,//: 1400,//Math.random()*viewH *1.5 - r,
-							//scaleX:scale,
-							//scaleY:scale,
+							viewW,
+							viewH,
+							x:Math.random()*viewW ,
+							y:viewH * Math.random(),//Math.random()*viewH *1.5 - r,
+							
 							//r :5,
 							fillStyle:'rgba('+r+','+g+','+b+','+a+')'
-						}).render(context);
+						})//.render(context);
 
 						points.push(point);
 						
 
 					})
-
-					///context.putImageData(imgData,0,0);
-
-
-
 					setTimeout(()=>{
+						points.forEach((point, index) => {
+							point.randomAnimate(context);
+						});
 
-						var sqrt = Math.sqrt;
-						var random = Math.random;
-
+					
 						(function render(){
 							
 							requestAnimationFrame(render);
 							context.clearRect(0,0,viewW,viewH);
-							points.forEach((point,index)=>{ 
-								 point.posAnimate(context);
+						 
+							points.forEach((point, index) => {
+								point.render(context);
+							});
+							TWEEN.update();
+						})();
 
-							})
+						var duration = 2000;
+						setTimeout(()=>{
+							points.forEach((point, index) => {
+								point.tween && point.tween.stop ();
+								new TWEEN.Tween(point)
+								.to({ x: pointsPos[index].x, y: pointsPos[index].y }, Math.random() * duration * 2)
+								.easing(TWEEN.Easing.Exponential.In).delay(Math.random())
+								.onUpdate(() => {
+									point.render(context);
+								}).onComplete(() => {
+									
+								}).start();
 
+								
+							});
+						},6000);
 
-
-						})()
-
-					},1000);
-
-
-
-
-
-
+					},10);
 				}
 				 
 			}
 			util.init();
 
 		})(document);
-
+		
 	</script>
 </body>
 </html>

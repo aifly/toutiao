@@ -18,6 +18,7 @@
 	<canvas id='canvas'></canvas>
 	<script src='./js/tween.js?t=2'></script>
 	<script>
+ 
 		
 		(function(document){
 
@@ -29,16 +30,9 @@
 					this.viewH = option.viewH || window.innerHeight;
 					this.viewW = option.viewW || window.innerWidth;
 					this.isMove = Math.random()>.8;
-					
-				    this.scaleX = option.scaleX || 1;
-    				this.scaleY = option.scaleY || 1;
 					this.fillStyle = option.fillStyle || 'red';
-					
-
 				}
-
 				render(context){
-
 					var {x , y ,r,speedX,speedY,g,fillStyle,scaleX, scaleY} = this;
 					context.save();
 					context.scale(scaleX, scaleY);
@@ -50,8 +44,6 @@
 					context.restore();
 					return this;
  				}
-
- 			 
 				randomAnimate(context){
 					var {viewW ,viewH, isToHuaWei} = this;
 					var is = Math.random() > .5 ? 1: -1;
@@ -119,15 +111,12 @@
 						lingrad.addColorStop(0,'#06f411');
 						lingrad.addColorStop(1,'#fd2508');
 					offContext.fillStyle = lingrad;
-
+					
 					var text = '华为加油!'
-
 					offContext.fillText(text,startX,20);
 					var imgData = offContext.getImageData(0,0,viewW,viewH);
 					var {width,height,data} = imgData;
-
 					var margin = 4;
-
 					for(var i = 0 ;i < width; i+= margin ){
 						for(var j = 0 ; j < height ; j+=margin){
 							var a = (i +j * width) *4
@@ -143,6 +132,8 @@
 							}
 						}
 					}
+
+					
 					pointsPos.forEach((p,i)=>{
 						var {x,y,r,g,b,a} = p;
 						var point = new Point({
@@ -169,7 +160,7 @@
 							
 							requestAnimationFrame(render);
 							context.clearRect(0,0,viewW,viewH);
-						 
+							
 							points.forEach((point, index) => {
 								point.render(context);
 							});
@@ -186,10 +177,7 @@
 								.onUpdate(() => {
 									point.render(context);
 								}).onComplete(() => {
-									
 								}).start();
-
-								
 							});
 						},6000);
 

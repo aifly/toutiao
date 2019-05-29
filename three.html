@@ -19,143 +19,141 @@
 
 <body>
 
+	<audio src="./music/1.m4a" id='audio'></audio>
 
 	<script src='https://threejs.org/build/three.js'></script>
 	<script>
 
-		var SEPARATION = 100;
-		var AMOUNTX = 20;
-		var AMOUNTY = 20;
-		var container, stats;
-		var camera, scene, renderer, particle;
-		var mouseX = 0, mouseY = 0;
-		var windowHalfX = window.innerWidth / 2;
-		var windowHalfY = window.innerHeight / 2;
-		var particles = [];
-		var arr = [];
-		var analyser;
-		init();
-		animate();
-		function init() {
-			container = document.createElement('div');
-			document.body.appendChild(container);
-			camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-			camera.position.z = 1000;
-			scene = new THREE.Scene();
-			
-			for (var ix = 0; ix < AMOUNTX; ix++) {
-				for (var iy = 0; iy < AMOUNTY; iy++) {
-					var random = Math.random;
-					var lineGeo = new THREE.BufferGeometry();
-					lineGeo.attributes.position = new THREE.BufferAttribute(new Float32Array([
-						ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2),
-						0,
-						iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2),
-						ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2),
-						30,
-						iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2),
-					]),3);
 
-					lineGeo.attributes.color = new THREE.BufferAttribute(new Float32Array([
-						1,1,1,
-						1,0,1
-					]),3);
-					var material = new THREE.LineBasicMaterial({
-						vertexColors: THREE.VertexColors
-					});
-			
-					particle = new THREE.Line (lineGeo,material);
-					particles.push(particle);
-					scene.add(particle);
+		(function(document){
+
+			var util = {
+				init(){
+
+					this.loadMusic();
+					this.initThreeJs();
+
+
+				},
+				viewW:window.innerWidth,
+				viewH:window.innerHeight,
+				particles:[],
+				arr:[],
+				initThreeJs(){
+					var { particles,viewW,viewH, arr, analyser} = this;
+					var windowHalfX = viewW / 2;
+					var windowHalfY = viewH / 2;
+					var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+					camera.position.z = 1000;
+					var scene = new THREE.Scene();
+					var SEPARATION = 100;
+					var AMOUNTX = 20;
+					var AMOUNTY = 20;
+					var mouseX = mouseY = 0;
+					for (var ix = 0; ix < AMOUNTX; ix++) {
+						for (var iy = 0; iy < AMOUNTY; iy++) {
+							var random = Math.random;
+							var lineGeo = new THREE.BufferGeometry();
+							lineGeo.attributes.position = new THREE.BufferAttribute(new Float32Array([
+								ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2),
+								0,
+								iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2),
+								ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2),
+								30,
+								iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2),
+							]), 3);
+
+							lineGeo.attributes.color = new THREE.BufferAttribute(new Float32Array([
+								1, 1, 1,
+								1, 0, 1
+							]), 3);
+							var material = new THREE.LineBasicMaterial({
+								vertexColors: THREE.VertexColors
+							});
+
+							particle = new THREE.Line(lineGeo, material);
+							particles.push(particle);
+							scene.add(particle);
+						}
+					}
+					renderer = new THREE.WebGLRenderer();
+					renderer.setPixelRatio(window.devicePixelRatio);
+					renderer.setSize(window.innerWidth, window.innerHeight);
+					document.body.appendChild(renderer.domElement);
+					document.addEventListener('mousemove', onDocumentMouseMove, false);
+					document.addEventListener('touchstart', onDocumentTouchStart, false);
+					document.addEventListener('touchmove', onDocumentTouchMove, false);
+
+					function onDocumentMouseMove(event) {
+						mouseX = event.clientX - windowHalfX;
+						mouseY = event.clientY - windowHalfY;
+					}
+					function onDocumentTouchStart(event) {
+						if (event.touches.length > 1) {
+							event.preventDefault();
+							mouseX = event.touches[0].pageX - windowHalfX;
+							mouseY = event.touches[0].pageY - windowHalfY;
+						}
+					}
+					function onDocumentTouchMove(event) {
+						if (event.touches.length == 1) {
+							event.preventDefault();
+							mouseX = event.touches[0].pageX - windowHalfX;
+							mouseY = event.touches[0].pageY - windowHalfY;
+						}
+					}
+					
+					(function render(){
+						requestAnimationFrame(render);
+						camera.position.x += (mouseX - camera.position.x) * .05;
+						camera.position.y += (- mouseY - camera.position.y) * .05;
+						camera.lookAt(scene.position);
+						renderer.render(scene, camera);
+						if (arr.length) {
+
+							analyser.getByteFrequencyData(arr);
+							particles.forEach(function (item, i) {
+								item.scale.y = Math.max(arr[i] / 30, 1);
+							})
+						}
+					})();
+					
+					
+
+				},
+				loadMusic(){
+					var {arr} = this;
+					var oAudio = document.getElementById('audio');
+					var ac = new (window.AudioContext || window.webkitAudioContext)();
+
+					oAudio.play();
+
+					var gainNode = ac[ac.createGain ? 'createGain' : 'createGianNode']();
+					// console.log(oCtx);
+					// 创建媒体源,除了audio本身可以获取，也可以通过oCtx对象提供的api进行媒体源操作
+					var audioSrc = ac.createMediaElementSource(oAudio);
+					// 创建分析机 
+					var analyser = ac.createAnalyser();
+					this.analyser = analyser;
+					// 媒体源与分析机连接
+					audioSrc.connect(analyser);
+					// 输出的目标：将分析机分析出来的处理结果与目标点（耳机/扬声器）连接
+					analyser.connect(ac.destination);
+
+					/* 效果（实现的具体方法）
+						根据分析音频的数据去获取音频频次界定音频图的高度
+						放在与音频频次等长的8位无符号字节数组
+						Uint8Array:初始化默认值为1024
+					  */
+					analyser.fftSize = 1024;
+					this.arr = new Uint8Array(analyser.frequencyBinCount)
 				}
-			}
-			renderer = new THREE.WebGLRenderer();
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			container.appendChild(renderer.domElement);
-			document.addEventListener('mousemove', onDocumentMouseMove, false);
-			document.addEventListener('touchstart', onDocumentTouchStart, false);
-			document.addEventListener('touchmove', onDocumentTouchMove, false);
-			//
-		}
 
-		function onDocumentMouseMove(event) {
-			mouseX = event.clientX - windowHalfX;
-			mouseY = event.clientY - windowHalfY;
-		}
-		function onDocumentTouchStart(event) {
-			if (event.touches.length > 1) {
-				event.preventDefault();
-				mouseX = event.touches[0].pageX - windowHalfX;
-				mouseY = event.touches[0].pageY - windowHalfY;
-			}
-		}
-		function onDocumentTouchMove(event) {
+			};
 
-			if (event.touches.length == 1) {
-				event.preventDefault();
-				mouseX = event.touches[0].pageX - windowHalfX;
-				mouseY = event.touches[0].pageY - windowHalfY;
-			}
-		}
-		//
-		function animate() {
-			requestAnimationFrame(animate);
-			render();
-
-		}
-		function render() {
-			camera.position.x += (mouseX - camera.position.x) * .05;
-			camera.position.y += (- mouseY - camera.position.y) * .05;
-			camera.lookAt(scene.position);
-			renderer.render(scene, camera);
-			if (arr.length) {
-
-				analyser.getByteFrequencyData(arr);
-				particles.forEach(function (item, i) {
-					item.scale.y = Math.max(arr[i]/30,1);
-				})
-			}
-		}
-
-
-		function loadMusic(url) {
-			var ac = new (window.AudioContext || window.webkitAudioContext)();
-
-			var gainNode = ac[ac.createGain ? 'createGain' : 'createGianNode']();
-
-			gainNode.connect(ac.destination);
-
-			analyser = ac.createAnalyser();
-			analyser.fftSize = 1024;
-			analyser.connect(gainNode);
-
-
-			var s = this;
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', url);
-			xhr.responseType = 'arraybuffer';
-			xhr.onload = function () {
-
-				ac.decodeAudioData(xhr.response, function (buffer) {
-					var bufferSource = ac.createBufferSource();
-					bufferSource.buffer = buffer;
-					bufferSource.connect(analyser);
-					//bufferSource.connect(ac.destination);
-
-					document.addEventListener('touchstart', function () {
-						bufferSource[bufferSource.start ? 'start' : 'noteOn'](0);
-					})
-					bufferSource[bufferSource.start ? 'start' : 'noteOn'](0);
-
-					arr = new Uint8Array(analyser.frequencyBinCount);
-
-				})
-			}
-			xhr.send();
-		}
-
-		loadMusic('./music/1.m4a')
+			util.init()
+		})(document);
+	 
 	</script>
 </body>
 

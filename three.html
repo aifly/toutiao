@@ -15,6 +15,13 @@
 			overflow: hidden;
 		}
 	</style>
+
+	<script>
+		document.addEventListener('touchmove',function(e){
+			e.preventDefault();
+			return false;
+		})
+	</script>
 </head>
 
 <body>
@@ -128,9 +135,8 @@
 
 					oAudio.play();
 
-					var gainNode = ac[ac.createGain ? 'createGain' : 'createGianNode']();
-					// console.log(oCtx);
 					// 创建媒体源,除了audio本身可以获取，也可以通过oCtx对象提供的api进行媒体源操作
+					//
 					var audioSrc = ac.createMediaElementSource(oAudio);
 					// 创建分析机 
 					var analyser = ac.createAnalyser();
@@ -139,12 +145,7 @@
 					audioSrc.connect(analyser);
 					// 输出的目标：将分析机分析出来的处理结果与目标点（耳机/扬声器）连接
 					analyser.connect(ac.destination);
-
-					/* 效果（实现的具体方法）
-						根据分析音频的数据去获取音频频次界定音频图的高度
-						放在与音频频次等长的8位无符号字节数组
-						Uint8Array:初始化默认值为1024
-					  */
+					
 					analyser.fftSize = 1024;
 					this.arr = new Uint8Array(analyser.frequencyBinCount)
 				}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue</title>
+</head>
+<body>
+
+	<div id="app">
+		{{msg}}
+		<div>
+			{{msg}}
+		</div>
+	</div>
+	<script>
+		class XVue{
+			constructor(props = {}) {
+				this.$props = props;
+				this.$data = props.data;
+				this.el = document.querySelector(el);
+				this.compile(this.el);
+			}
+
+			compile(node){
+				
+			}
+		}
+		(function(){
+			var vm = new XVue({
+				el:'#app',
+				data:{
+					msg:'hello'
+				}
+			})
+		})();
+	</script>
+</body>
+</html>

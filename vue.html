@@ -22,7 +22,20 @@
 			}
 
 			compile(node){
-				
+				var nodeList = node.childNode;
+				//
+				[...nodeList].forEach((child,i)=>{
+					if(child.nodeType === 3){//文本节点
+						var reg = /\{\{\s*(\S*)\s*\}\}/;
+						if(reg.test(child)){
+							var group = Reg.$1;
+							
+						}
+					}
+					else if(child.nodeType === 1){//标签
+						this.complie(child);
+					}
+				})
 			}
 		}
 		(function(){

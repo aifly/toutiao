@@ -9,31 +9,29 @@
 	<div id="app">
 		{{msg}}
 		<div>
-			{{msg}}
+			{{date}}
 		</div>
 	</div>
 	<script>
 		class XVue{
-			constructor(props = {}) {
-				this.$props = props;
+			constructor(props = {}) { 
 				this.$data = props.data;
-				this.el = document.querySelector(el);
+				this.el = document.querySelector(props.el);
 				this.compile(this.el);
 			}
-
 			compile(node){
-				var nodeList = node.childNode;
-				//
+				var nodeList = node.childNodes;
 				[...nodeList].forEach((child,i)=>{
 					if(child.nodeType === 3){//文本节点
 						var reg = /\{\{\s*(\S*)\s*\}\}/;
-						if(reg.test(child)){
-							var group = Reg.$1;
-							
+						var content = child.textContent;
+						if(reg.test(content)){
+							var group = RegExp.$1;
+							child.textContent = this.$data[group];
 						}
 					}
 					else if(child.nodeType === 1){//标签
-						this.complie(child);
+						this.compile(child);//继续递归替换。
 					}
 				})
 			}
@@ -42,10 +40,38 @@
 			var vm = new XVue({
 				el:'#app',
 				data:{
-					msg:'hello'
+					msg:'hello',
+					date:'2019-05-31'
 				}
 			})
 		})();
+		`
+			java和web前端哪个更好找工作，哪个更有发展前景？
+
+			作为一个工作多年的程序员，我来回答一下这个问题
+
+			从近几年的互联网发展来看，两者都是发展很不错的方向。
+			我本人是做了5年多的前端+两年的.net经验。站在我的角度我会觉得前端会更有发展前景。
+			理由如下：
+			
+			js和java一样，诞生于1995年。但是从过去的几十年来看，java的发展明显要优于js。因为在web2.0之前，js处理逻辑的能力非常弱，只能做一些简单的页面动效
+			当年的js程序员一度生活在开发界的最底层。
+
+			随着web2.0、移动互联网的兴起、nodejs的诞生给前端注入了全新的活力。前端这种曾经被鄙视的职位已经被重新定义，一夜间翻盘复活。
+			
+			现在的不管是移动端App还是PC、webApp都离不开前端的力量，可见其应用场景非常的广阔。但是建议如果前端进入了一个高度后一定要学一门后台语言作为你的辅助语言，将对你的职业竞争力非常有帮助
+
+			再来说一下java，当年很多人喜欢拿java和.net比较，说java最大的特点为跨平台，一次编写，处处运行。所以我当年也是被鄙视的对象，后来就转前端了。
+			java的发展也有几十年的历史了，一直很火热。能轻松应付各种大型应用系统。
+
+
+
+
+
+
+
+
+		`
 	</script>
 </body>
 </html>

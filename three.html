@@ -117,7 +117,6 @@
 						camera.lookAt(scene.position);
 						renderer.render(scene, camera);
 						if (arr.length) {
-
 							analyser.getByteFrequencyData(arr);
 							particles.forEach(function (item, i) {
 								item.scale.y = Math.max(arr[i] / 30, 1);
@@ -129,7 +128,7 @@
 
 				},
 				loadMusic(){
-					var {arr} = this;
+				
 					var oAudio = document.getElementById('audio');
 					var ac = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -147,6 +146,7 @@
 					analyser.connect(ac.destination);
 					
 					analyser.fftSize = 1024;
+					///console.log(analyser.frequencyBinCount,'analyser.frequencyBinCount')
 					this.arr = new Uint8Array(analyser.frequencyBinCount)
 				}
 

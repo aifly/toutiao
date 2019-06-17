@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>前端图形学基础－Canvas入门</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<style>
+		*{margin: 0;padding: 0;}
+		canvas{
+		}
+	</style>
+</head>
+
+<body>
+
+	<canvas  width="414" height="736">
+		
+	</canvas>
+	<script>
+		((document)=>{
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			context.strokeStyle = '#f00';
+
+			context.translate(10,100);
+			context.moveTo(0,0);
+			const M = Math,k = 80;//
+			context.beginPath();
+
+			for(var angle = 0 ; angle < 360;angle++){
+				var x = angle;
+				var y = M.sin(angle*M.PI/180)*k;
+				context.lineTo(x,y);
+			}
+			context.stroke();
+
+			context.beginPath();
+			var angle1 = 0 ;
+			context.strokeStyle = '#000';
+			var t = setInterval(()=>{
+				
+				if(angle1>=360){
+					clearInterval(t);
+					return;
+				}
+
+				var x = angle1;
+				
+				var y = M.cos(angle1*Math.PI/180)*k ;
+				
+				context.lineTo(x,y);
+				
+				context.stroke();
+
+				angle1++;
+
+				
+			},20)
+			
+		})(document);	
+	</script>
+</body>
+</html>

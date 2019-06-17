@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+
+	<script src='./js/three.js'></script>
+	<script>
+		(function(document){
+
+			class XThree{
+				constructor(props) {
+					this.viewW = window.innerWidth;
+					this.viewH = window.innerHeight;					
+					this.init();
+				}
+				init(){
+					var {viewW,viewH} = this;
+					var scene = new THREE.Scene();
+					this.scene = scene;
+					var camera = new THREE.PerspectiveCamera( 60, viewW/viewH, .1, 1000 );
+					this.camera = camera;
+					this.camera.position.z = 400;
+
+					var renderer  = new THREE.WebGLRenderer();
+					this.renderer = renderer;
+					this.renderer.setSize(viewW,viewH);
+					this.renderer.setPixelRatio(window.devicePixelRatio);
+
+					document.body.appendChild(this.renderer.domElement);
+
+					this.createSphere(-100);
+					this.createSphere(100,7);
+
+					(function render(){
+						requestAnimationFrame(render);
+
+						renderer.render(scene,camera);
+					})();
+
+				}
+
+				createSphere(x= 0,segments = 10){
+					var {scene} = this;
+					var material = new THREE.MeshBasicMaterial( {
+						wireframe :true,
+						color:'#f00'
+					});
+					var box = new THREE.SphereGeometry( 80,segments,segments );
+					var mesh = new THREE.Mesh(box,material);
+
+					mesh.position.x = x;
+
+					scene.add(mesh);
+				}
+			}
+
+			new XThree();
+
+		})(document);
+	</script>
+	
+</body>
+</html>

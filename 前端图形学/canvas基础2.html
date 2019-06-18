@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>前端图形学基础－Canvas入门</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<style>
+		*{margin: 0;padding: 0;}
+		canvas{
+		}
+	</style>
+</head>
+
+<body>
+
+	<canvas  width="414" height="736">
+		
+	</canvas>
+	<script>
+		((document)=>{
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			context.strokeStyle = '#f00';
+
+			var img = new Image();
+			img.onload = function(){
+				var singleW = this.width / 11; //因为图片有11帧
+				var singleH = this.height;
+				var i = 1;
+				setInterval(()=>{
+					i%=11;
+					
+					context.clearRect(0,0,singleW*2,singleH*2);
+					context.drawImage(this,singleW*i,0,singleW,singleH,10,10,singleW,singleH);
+
+					i+=1;
+				},60)
+			}
+			img.src ='./img/person.png';
+			
+		})(document);	
+	</script>
+</body>
+</html>

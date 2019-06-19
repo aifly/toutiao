@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>canvas绘制曲线</title>
+</head>
+<body>
+	<canvas id='canvas'></canvas>
+	<script>
+		(()=>{
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var {width,height} = canvas;
+
+			
+	
+			var x = 0,y = 10;
+			var speedX = 3,speedY = 3;
+			var t = setInterval(()=>{
+				context.beginPath();
+				context.clearRect(0,0,width,height);
+				context.arc(x, y,4,0,Math.PI*2,false);
+				context.fill();
+				context.moveTo(x,y);
+				context.lineTo(0,150);
+				context.quadraticCurveTo(x, y, 320, 150);
+				context.closePath();
+				context.stroke();
+				if(x>300){
+					y+=speedY;
+					speedX = 0;
+					if(y>300){
+						speedX = -3;
+					}
+				}
+				
+				if(speedX<0 && x<=0){
+					clearInterval(t);
+				}
+
+				x+= speedX;
+
+				
+				
+			},30);
+
+
+			return;
+			context.beginPath();
+			context.moveTo(0, 400);
+			context.quadraticCurveTo(150, 200, 320, 400);
+			context.stroke();
+
+
+
+
+		})();
+	</script>
+</body>
+</html>

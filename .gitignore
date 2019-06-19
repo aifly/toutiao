@@ -1,0 +1,5 @@
+node_modules/
+tree-shaking/node_modules/
+.idea/
+*.xml
+.idea/*.xml

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style lang="">
+		#container{
+			height: 400px;
+			width: 100%;
+			border:1px solid red;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="container" ></div>
+	<div id="city"></div>
+	
+	<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=6WOBZ-FGA64-GYNUC-DJQ6Z-IH4U7-67BJC"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/vConsole/3.2.2/vconsole.min.js"></script>
+
+	
+
+	 <script>
+		new VConsole();
+
+		function jsonFlickrFeed() {
+			alert(2)
+		}
+		
+		$.ajax({
+			type: 'get',
+			url: "https://apis.map.qq.com/ws/location/v1/ip?key=6WOBZ-FGA64-GYNUC-DJQ6Z-IH4U7-67BJC",
+			dataType: 'jsonp',
+			jsonp: "callback",
+			jsonpCallback: "callback",
+			success(data) {
+				console.log(data);
+			}
+		})
+	</script>
+
+
+	<script>
+		var citylocation, map, marker = null;
+		var init = function () {
+			var center = new qq.maps.LatLng(39.916527, 116.397128);
+			var city = document.getElementById("city");
+			map = new qq.maps.Map(document.getElementById('container'), {
+				center: center,
+				zoom: 13
+			});
+			//获取  城市位置信息查询 接口  
+			citylocation = new qq.maps.CityService({
+				//设置地图
+				map: map,
+
+				complete: function (results) {
+					alert(2)
+					city.innerHTML = '所在位置: ' + results.detail.name;
+					map.setCenter(results.detail.latLng);
+					var marker = new qq.maps.Marker({//设置marker标记
+						map: map,
+						position: results.detail.latLng
+					});
+					console.log(marker);
+				},
+				error(){
+					alert(23)
+				}
+			});
+
+			console.log(citylocation.map)
+		}
+		
+		init();
+
+
+
+		
+	</script>
+</body>
+</html>

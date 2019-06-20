@@ -1,4 +1,4 @@
-import lodash from 'lodash-es';
+ import lodash from 'lodash-es';
 function fn(){
 	lodash.isArray([]);
 }

@@ -11,8 +11,7 @@
 			font-size:0;
 			
 		}
-		canvas{
-		}
+		 
 	</style>
 </head>
 <body>
@@ -27,43 +26,19 @@
 
 			
 	
-			var x = 0,y = 10;
-			var speedX = 3,speedY = 3;
-			var t = setInterval(()=>{
-				context.beginPath();
-				context.clearRect(0,0,width,height);
-				context.arc(x, y,4,0,Math.PI*2,false);
-				context.fill();
-				context.moveTo(x,y);
-				context.lineTo(0,150);
-				context.quadraticCurveTo(x, y, 320, 150);
-				context.closePath();
-				context.stroke();
-				if(x>300){
-					y+=speedY;
-					speedX = 0;
-					if(y>300){
-						speedX = -3;
-					}
-				}
-				
-				if(speedX<0 && x<=0){
-					clearInterval(t);
-				}
-
-				x+= speedX;
-
-				
-				
-			},30);
-
-
-			return;
+		document.body.addEventListener('mousemove',(e)=>{
+			var x = e.pageX;
+			var y = e.pageY;
 			context.beginPath();
-			context.moveTo(0, 400);
-			context.quadraticCurveTo(150, 200, 320, 400);
+			context.clearRect(0,0,width,height);
+			context.arc(x, y,4,0,Math.PI*2,false);
+			context.fill();
+			context.moveTo(x,y);
+			context.lineTo(0,150);
+			context.quadraticCurveTo(x, y, 320, 150);
+			context.closePath();
 			context.stroke();
-
+		})
 
 
 

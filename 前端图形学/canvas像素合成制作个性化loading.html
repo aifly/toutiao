@@ -32,19 +32,35 @@
 
 				canvas.width = this.width;
 				canvas.height = this.height;
-				context.drawImage(this,0,0);
+				var {width,height} = canvas;
 				
-				//context.globalCompositeOperation = 'source-atop';
-				context.moveTo(0,this.height / 2);
-				for(var i = 0; i< 360;i++){
-					var x = i*10;
-					var y = 10 * Math.sin(x*Math.PI/180);
-					console.log(x,y)
-					context.lineTo(x,y);
-				}
-				context.stroke();
+				var a = 1;
+				
+				var iNow =0 ;
+				var t = setInterval(()=>{
+					context.clearRect(0,-height,width,height*2)
+					context.save();
+					context.drawImage(this,0,0);
+					context.translate(0,height/4);
+					context.globalCompositeOperation = 'source-atop';
+					context.beginPath();
+					for(var i = 0; i< width;i++){
+						iNow -=0.0005;
+						var x = i;
+						var y = 8* Math.sin( x * Math.PI / 180 + (i / 200) + iNow);
+						context[i === 0 ? 'moveTo':'lineTo'](x,y);
+					}
+					context.lineTo(width,height);
+					context.lineTo(0,height);
+					context.closePath();
+					context.fillStyle = '#f90';
+					context.fill()
 
-				context.fillStyle = '#f90';
+					context.strokeStyle = '#f90';
+					context.stroke();
+					context.restore();
+				},30)
+
 
 				//context.fillRect(0,30,this.width,this.height -30)
 			}

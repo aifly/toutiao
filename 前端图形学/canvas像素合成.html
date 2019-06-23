@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>canvas绘制曲线</title>
+	<style lang="">
+		*{margin:0;padding:0}
+		body{
+			font-size:0;
+			
+		}
+		canvas{
+		}
+	</style>
+</head>
+<body>
+	<canvas id='canvas'></canvas>
+	<script>
+		(()=>{
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var {width,height} = canvas;
+			var img = new Image();
+
+			img.onload = function(){
+
+				context.drawImage(this,100,100);
+				
+				context.globalCompositeOperation = 'source-atop';
+				
+				context.fillStyle = '#f90'
+				context.save();
+				context.translate(0,height/5);
+				context.beginPath();
+				for(var i = 0; i< width;i++){
+					var x = i;
+					var y = 8* Math.sin( x * Math.PI / 180 + (i / 200));
+					context[i === 0 ? 'moveTo':'lineTo'](x,y);
+				}
+				context.lineTo(width,height);
+				context.lineTo(0,height);
+				context.closePath();
+				context.fill()
+				context.restore();
+			}
+			img.src = './img/loading.png';
+
+
+
+
+		})();
+	</script>
+</body>
+</html>

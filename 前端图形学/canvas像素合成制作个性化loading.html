@@ -24,28 +24,31 @@
 			
 			var canvas = document.querySelector('canvas');
 			var context = canvas.getContext('2d');
-
-			
 			var img = new Image();
-
 			img.onload = function(){
-
 				canvas.width = this.width;
 				canvas.height = this.height;
 				var {width,height} = canvas;
-				
-				var a = 1;
-				
-				var iNow =0 ;
+				var iNow =0 ,a = 0;
 				var t = setInterval(()=>{
+
 					context.clearRect(0,-height,width,height*2)
 					context.save();
 					context.drawImage(this,0,0);
-					context.translate(0,height/4);
+					var transY = height
+
+					if(a>height){
+						a = height;	
+						clearInterval(t);
+					}
+					document.title ='当前进度为； '+ ((a / height*100) | 0)+'%';
+					context.translate(0,height - a);
+					a+=.5;
 					context.globalCompositeOperation = 'source-atop';
 					context.beginPath();
+
 					for(var i = 0; i< width;i++){
-						iNow -=0.0005;
+						iNow -=0.002;
 						var x = i;
 						var y = 8* Math.sin( x * Math.PI / 180 + (i / 200) + iNow);
 						context[i === 0 ? 'moveTo':'lineTo'](x,y);
@@ -59,10 +62,8 @@
 					context.strokeStyle = '#f90';
 					context.stroke();
 					context.restore();
-				},30)
 
-
-				//context.fillRect(0,30,this.width,this.height -30)
+				},30);
 			}
 			img.src = './img/loading.png';
 			

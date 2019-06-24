@@ -19,51 +19,49 @@
 <body>
 	<canvas ></canvas>
 	<script>
-		((document)=>{
-			var canvas = document.querySelector('canvas');
-			var context = canvas.getContext('2d');
-  			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			var {width,height} = canvas;
-			var speed =0 ;
-			var speed1 = 0;
-			var t = setInterval(()=>{
-				context.clearRect(0,-height,width,height*2)
-				context.save();
-				context.translate(0,height/10);
-				context.beginPath();
-				for(var i = 0; i< width;i++){
-					speed -=0.0005;
-					var x = i;
-					var y = 8* Math.sin( x * Math.PI / 180 + (i / 200) + speed);
-					context[i === 0 ? 'moveTo':'lineTo'](x,y);
-				}
-				context.lineTo(width,height);
-				context.lineTo(0,height);
-				context.closePath();
-				context.fillStyle = 'rgba(156,10,217,1)';
-				context.fill()
-				context.restore();
-
-				context.save();
-				context.translate(0,height/10);
-				context.beginPath();
-				for(var i = 0; i< width;i++){
-					speed1 -=0.0003;
-					var x = i;
-					var y = 8* Math.cos( x * Math.PI / 180 + (i / 200) + speed1);
-					context[i === 0 ? 'moveTo':'lineTo'](x,y);
-				}
-				context.lineTo(width,height);
-				context.lineTo(0,height);
-				context.closePath();
-				context.fillStyle = 'rgba(156,10,217,.6)';
-				context.fill()
-				context.restore();
-			},30);
-
-
-		})(document);
+			((document)=>{
+				var canvas = document.querySelector('canvas');
+				var context = canvas.getContext('2d');
+	  			canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+				var {width,height} = canvas;
+				var speed =0 ;
+				var speed1 = 0;
+				var t = setInterval(()=>{
+					context.clearRect(0,-height,width,height*2)
+					context.save();
+					context.translate(0,height/10);
+					context.beginPath();
+					for(var i = 0; i< width;i++){
+						speed -=0.0005;
+						var x = i;
+						var y = 8* Math.sin( x * Math.PI / 180 + (i / 200) + speed);
+						context[i === 0 ? 'moveTo':'lineTo'](x,y);
+					}
+					context.lineTo(width,height);
+					context.lineTo(0,height);
+					context.closePath();
+					context.fillStyle = 'rgba(156,10,217,1)';
+					context.fill()
+					context.restore();
+					
+					context.save();
+					context.translate(0,height/10);
+					context.beginPath();
+					for(var i = 0; i< width;i++){
+						speed1 -=0.0003;
+						var x = i;
+						var y = 8* Math.cos( x * Math.PI / 180 + (i / 200) + speed1);
+						context[i === 0 ? 'moveTo':'lineTo'](x,y);
+					}
+					context.lineTo(width,height);
+					context.lineTo(0,height);
+					context.closePath();
+					context.fillStyle = 'rgba(156,10,217,.6)';
+					context.fill()
+					context.restore();
+				},30);
+			})(document);
 	</script>
 </body>
 </html>

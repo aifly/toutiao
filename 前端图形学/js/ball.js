@@ -1,3 +1,4 @@
+//小球类
 class Ball {
 	constructor(options) {
 		this.x = 0;//小球x坐标
@@ -18,10 +19,11 @@ class Ball {
 		context.save();
 		context.strokeStyle = strokeStyle;
 		context.fillStyle = fillStyle;
+		context.translate(x,y);
 		context.globalAlpha = opacity;
 		context.scale(scaleX, scaleY);
 		context.beginPath();
-		context.arc(x, y, r, 0, Math.PI * 2, false);
+		context.arc(0, 0, r, 0, Math.PI * 2, false);
 		context.fill();
 		context.stroke();
 		context.restore();

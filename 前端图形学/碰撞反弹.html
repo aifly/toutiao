@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>小球的碰撞反弹</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	
+		body {
+			font-size: 0;
+			overflow: hidden;
+		}
+		canvas{
+		}
+	</style>
+</head>
+<body>
+	<canvas></canvas>
+	<script src='./js/ball.js'></script>
+	<script>
+		((document)=>{
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var ball = new  Ball({
+				x:width/2,
+				y:height/3,
+				r:60,
+				fillStyle:'#f90'
+			}).render(context);
+			var vy = 10;
+			var k = .8;
+			var g = 2;
+			(function move() {
+				context.clearRect(0, 0, width, height);
+				window.requestAnimationFrame(move);
+				ball.y += vy;
+				vy += g;
+				if(ball.y >= height - ball.r ){
+					//vy *= k;
+					//ball.y = height - ball.r;
+					vy *= -k;
+				}
+				ball.render(context);
+			})();
+
+		})(document);
+	</script>
+</body>
+</html>

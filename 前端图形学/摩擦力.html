@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>摩擦力</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-size: 0;
+		}
+
+		canvas {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas></canvas>
+	<script src='./js/ball1.js'></script>
+	<script>
+		((document) => {
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+
+			var ball = new Ball({
+				x:width/2,
+				y:50,
+				r:50,
+				vy:Math.random()*3+10,
+				fillStyle:'#f90'
+			}).render(context);
+
+			var k = .7;//摩擦系数
+			var g = 2;//重力加速度
+			(function move(){
+				window.requestAnimationFrame(move);
+				context.clearRect(0,0,width,height); 
+				ball.y += ball.vy;
+				ball.vy += g;
+				if(ball.y + ball.r >= height){//小球触碰到地面上的临界条件。
+					ball.y = height - ball.r;
+					//将小球的速度取反，然后由于摩擦力的存在 ，我们要将速度减小。
+					ball.vy *= -k;
+				}
+				if(Math.abs(ball.vy) < 8 && height -( ball.y + ball.r ) < 8 ){
+					ball.y = height - ball.r;
+					ball.vy = 0;
+				}
+				ball.render(context);
+			})();
+		})(document);
+	</script>
+</body>
+
+</html>

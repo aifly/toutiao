@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>抛物线实例</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			font-size: 0;
+		}
+
+		canvas {
+			display: block;
+		}
+		#log{
+			position: absolute;
+			left: 20px;
+			top:30px;;
+			z-index: 10;
+			font-size: 30px;
+			font-family: Georgia;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='log'></div>
+	<canvas></canvas>
+	<script src='./js/ball1.js'></script>
+	<script>
+		((document) => {
+			var canvas = document.querySelector('canvas'),
+				log = document.querySelector('#log');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var balls = [];
+			var t = setInterval(()=>{
+				var ball = new Ball({
+					x: width - 30,
+					y: height /2 ,
+					r: 20,
+					vx:-(Math.random()*10 + 4) ,
+					vy: -(Math.random() * 20 + 10),
+					g:Math.random() * 3 +1 ,
+					fillStyle: `rgb(
+							${(Math.random() * 255 | 0)},
+							${(Math.random() * 255 | 0)},
+							${(Math.random() * 255 | 0)}
+						)`
+				});
+				balls.push(ball);
+			},100);
+			var k = .6;//摩擦系数
+			(function move() {
+				window.requestAnimationFrame(move);
+				context.clearRect(0, 0, width, height);
+				balls.forEach((ball,i)=>{
+					ball.x += ball.vx;
+					ball.y += ball.vy;
+					ball.vy += ball.g;
+					if(ball.y + ball.r >= height){
+						ball.y = height - ball.r;
+						ball.vy *= -k;
+					}
+					if(ball.x+ ball.r < 0){
+						ball = null;
+						balls.splice(i,1);
+					}
+					ball && ball.render(context);
+				});
+				log.innerHTML = '当前balls的长度为 ： ' + balls.length;
+			})();
+		})(document);
+	</script>
+</body>
+
+</html>

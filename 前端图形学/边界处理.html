@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>边界处理</title>
+	<style>
+		*{margin: 0 ;padding: 0;}
+		body{
+			font-size:0;
+		}
+	</style>
+</head>
+<body>
+	<canvas></canvas>
+	<script src='./js/ball.js?t=3'></script>
+	<script>
+		((document)=>{
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var {width,height} = canvas;
+			var balls = [];
+			for(var i = 0 ; i < 10 ;i++){
+				var ball = new Ball({
+					x:Math.random()*width,
+					y:Math.random()*height,
+					r:Math.random()*10+10,
+					vx:(Math.random()*3 + 1) * (Math.random()>.5?1:-1),
+					vy:(Math.random()*3 + 1) * (Math.random()>.5?1:-1),
+					fillStyle : 'rgb('+(Math.random()*255|0)+','+(Math.random()*255|0)+','+(Math.random()*255|0)+')'
+				}).render(context);
+
+				balls.push(ball);
+			}
+			(function move(){
+				context.clearRect(0,0,width,height);
+				window.requestAnimationFrame(move);
+				balls.forEach((ball)=>{
+					ball.x += ball.vx;
+					ball.y += ball.vy;
+
+					if(ball.x - ball.r <=0 ||  ball.x + ball.r >= width){
+						ball.vx *= -1;
+					}
+					if(ball.y - ball.r <= 0 || ball.y + ball.r >=height){
+						ball.vy *= -1;
+					}
+
+					ball.render(context);
+				})
+			})();
+		})(document);
+	</script>
+</body>
+</html>

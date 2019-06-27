@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>加速度</title>
+	<style>
+		*{margin: 0 ;padding: 0;}
+		body{
+			font-size:0;
+		}
+	</style>
+</head>
+<body>
+	<canvas></canvas>
+	<script src='./js/ball.js?t=3'></script>
+	<script>
+		((document)=>{
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			var {width,height} = canvas;
+			var balls = [];
+
+			for(var i = 0 ; i < 10 ;i++){
+				var ball = new Ball({
+					x:Math.random()*width,
+					y:Math.random()*height,
+					r:Math.random()*10+10,
+					fillStyle : 'rgb('+(Math.random()*255|0)+','+(Math.random()*255|0)+','+(Math.random()*255|0)+')'
+				}).render(context);
+
+				balls.push(ball);
+			}
+
+			var ball = new Ball({
+				x:50,
+				y:100,
+				fillStyle:'#f90'
+			}).render(context);
+
+			var vy = 1,
+				g = .3;//加速度
+			(function move(){
+				context.clearRect(0,0,width,height);
+				window.requestAnimationFrame(move);
+				ball.y += vy;
+				vy+=g;
+				ball.render(context);
+			})();
+		})(document);
+	</script>
+</body>
+</html>

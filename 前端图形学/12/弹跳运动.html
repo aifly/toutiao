@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>弹跳运动</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-size: 0;
+		}
+
+		canvas {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas></canvas>
+	<script src='../js/ball.js'></script>
+	<script>
+		((document) => {
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var isStart = false;
+			var ball = new Ball({
+				x: 100,
+				y: 100,
+				r: 60,
+				fillStyle: '#f90'
+			}).render(context);
+
+
+			var target = {
+				x: width / 2,
+			};
+
+			var easeing = 0.15;
+
+			var k = .9;
+
+
+
+			
+			document.body.ontouchstart = function () {
+				isStart = true;
+			};
+			(function move() {
+				window.requestAnimationFrame(move);
+				if (isStart) {
+					context.clearRect(0, 0, width, height);
+					
+					var ax = (target.x - ball.x ) * easeing;
+					ball.vx += ax ;
+					ball.vx *= k;
+					ball.x += ball.vx;
+					
+
+					ball.render(context);
+				}
+			})();
+
+
+
+
+
+		})(document);
+	</script>
+</body>
+
+</html>

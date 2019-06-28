@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>缓冲运动</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			font-size: 0;
+		}
+
+		canvas {
+			display: block;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<canvas></canvas>
+	<script src='../js/ball.js'></script>
+	<script>
+		((document) => {
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var isStart = false;
+			var ball = new Ball({
+				x:100,
+				y:100,
+				r:60,
+				fillStyle:'#f90'
+			}).render(context);
+
+
+			var target = {
+				x:width/4*3,
+				y:height/4*3
+			};
+
+			var easeing = 0.05;
+
+			var ball1 = new Ball({
+				x:target.x,
+				y:target.y,
+				r:60,
+				fillStyle:'#000'
+			}).render(context);
+			document.body.ontouchstart = function(){
+				isStart = true;
+			};
+			(function move(){
+				window.requestAnimationFrame(move);
+				if(isStart){
+					context.clearRect(0,0,width,height);
+					ball.vx = (target.x - ball.x) * easeing;
+					ball.vy = (target.y - ball.y) * easeing;
+					ball.x += ball.vx;
+					ball.y += ball.vy;
+	
+					ball1.render(context);
+					ball.render(context);
+				}
+			})();
+
+
+
+
+			
+		})(document);
+	</script>
+</body>
+
+</html>

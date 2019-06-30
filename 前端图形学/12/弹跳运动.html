@@ -32,29 +32,17 @@
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			var { width, height } = canvas;
-			var isStart = false;
 			var ball = new Ball({
 				x: 100,
 				y: 100,
 				r: 60,
 				fillStyle: '#f90'
 			}).render(context);
-
-
 			var target = {
 				x: width / 2,
 			};
-
 			var easeing = 0.15;
-
 			var k = .9;
-
-
-
-			
-			document.body.ontouchstart = function () {
-				isStart = true;
-			};
 			(function move() {
 				window.requestAnimationFrame(move);
 				if (isStart) {
@@ -64,15 +52,9 @@
 					ball.vx += ax ;
 					ball.vx *= k;
 					ball.x += ball.vx;
-					
-
 					ball.render(context);
 				}
 			})();
-
-
-
-
 
 		})(document);
 	</script>

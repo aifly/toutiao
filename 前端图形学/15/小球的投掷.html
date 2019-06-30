@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>斜抛运动</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-size: 0;
+		}
+
+		canvas {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas></canvas>
+	<script src='../js/ball.js?t=5'></script>
+	<script>
+		((document) => {
+			var canvas = document.querySelector('canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var isMoving = false;
+			var ball = new Ball({
+				x: 200,
+				y: 200,
+				r: 80,
+				g:1,
+				vy:-Math.random()*3+1,
+				fillStyle: '#f90'
+			}).render(context);
+			var k = -.6;
+
+			canvas.onmousedown = function(e){
+				var mouseX = e.pageX - canvas.offsetLeft;
+				var mouseY = e.pageY - canvas.offsetTop;
+
+				ball.render(context,mouseX,mouseY);
+				if(!ball.isPointInPath){
+					return;
+				}
+
+				var startX = mouseX - ball.x;
+				var startY = mouseY - ball.y;
+
+				
+				var lastX  = 0,
+					lastY = 0;
+
+				canvas.onmousemove = function(e){
+					isMoving = true;
+					context.clearRect(0,0,width,height);
+					var disX = e.pageX - startX;
+					var disY = e.pageY - startY;
+					ball.x = disX;
+					ball.y = disY;
+					ball.render(context);
+
+					canvas.style.cursor = 'pointer';
+
+					ball.vx = disX - lastX;
+					ball.vy = disY - lastY;
+
+
+					lastX = disX;
+					lastY = disY;
+
+				}
+
+				canvas.onmouseup = function(){
+					isMoving = false;
+					canvas.onmousemove = null;
+					canvas.onmouseup = null;
+					canvas.style.cursor = 'default';
+				}
+
+			};
+
+			(function move(){
+				window.requestAnimationFrame(move);
+				context.clearRect(0,0,width,height);
+				if(!isMoving){
+
+					//小球顶部的判断
+					if( ball.y - ball.r <=0 ){
+						ball.vy *= k;
+						ball.y = ball.r;
+					}
+
+					//小球的底部判断
+					if(ball.y + ball.r >=height ){
+						ball.vy *= k;	
+						ball.y = height - ball.r;
+					}
+					
+					//小球左侧的判断
+					if(ball.x - ball.r <=0){
+						ball.x = ball.r
+						ball.vx *= k;
+					}
+
+					//小球右侧的判断
+					if(ball.x + ball.r >= width){
+						ball.x = width - ball.r;
+						ball.vx *= k;
+					}
+
+					//小球最终在y轴下停下来的条件
+					//1.离屏幕底部足够小。
+					//2.小球的速度足够小
+					if((height - (ball.y + ball.r) )< 7 && ball.vy < 3){
+						ball.y = height -  ball.r;
+					}
+
+					ball.vy += ball.g;
+					
+					ball.x += ball.vx;
+					ball.y += ball.vy;
+				}
+				ball.render(context);
+			})()
+			
+		})(document);
+	</script>
+</body>
+
+</html>

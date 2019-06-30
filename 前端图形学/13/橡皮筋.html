@@ -5,12 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=750,user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>缓冲运动</title>
+	<title>橡皮筋</title>
 	<style lang="">
 		* {
 			margin: 0;
 			padding: 0;
 		}
+
 		body {
 			font-size: 0;
 		}
@@ -18,7 +19,6 @@
 		canvas {
 			display: block;
 		}
-		
 	</style>
 </head>
 
@@ -32,28 +32,35 @@
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			var { width, height } = canvas;
-			var isStart = false;
 			var ball = new Ball({
-				x:100,
-				y:100,
-				r:60,
-				fillStyle:'#f90'
+				x: 100,
+				y: 100,
+				r: 30,
+				fillStyle: '#f90'
 			}).render(context);
-
-			var target = {
-				x:width / 4 * 3,
-				y:height/4*3
-			};
-			var easeing = 0.05;
-			
-			(function move(){
+			var mouse = {x:0,y:0};
+			canvas.onmousemove = function(e){
+				mouse.x = e.pageX - canvas.offsetLeft;
+				mouse.y = e.pageY - canvas.offsetTop;
+			}
+			var easeing = 0.15,k = .9,g = 15;
+			(function move() {
 				window.requestAnimationFrame(move);
-				context.clearRect(0,0,width,height);
-				ball.vx = (target.x - ball.x) * easeing;
-				ball.vy = (target.y - ball.y) * easeing;
-				ball.x += ball.vx;
-				ball.y += ball.vy;
-				ball.render(context);
+					context.clearRect(0, 0, width, height);
+					var ax = (mouse.x - ball.x ) * easeing;
+					var ay = (mouse.y - ball.y ) * easeing;
+					ball.vx += ax ;
+					ball.vy +=ay;
+					ball.vx *= k;
+					ball.vy *= k;
+					ball.x += ball.vx;
+					ball.y += ball.vy;
+					ball.vy += g;
+					ball.render(context);
+					context.beginPath();
+					context.moveTo(ball.x,ball.y);
+					context.lineTo(mouse.x,mouse.y);
+					context.stroke();
 			})();
 		})(document);
 	</script>

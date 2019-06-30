@@ -5,12 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=750,user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>缓冲运动</title>
+	<title>小球的移动事件</title>
 	<style lang="">
 		* {
 			margin: 0;
 			padding: 0;
 		}
+
 		body {
 			font-size: 0;
 		}
@@ -18,7 +19,6 @@
 		canvas {
 			display: block;
 		}
-		
 	</style>
 </head>
 
@@ -32,29 +32,14 @@
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			var { width, height } = canvas;
-			var isStart = false;
-			var ball = new Ball({
-				x:100,
-				y:100,
-				r:60,
-				fillStyle:'#f90'
-			}).render(context);
-
-			var target = {
-				x:width / 4 * 3,
-				y:height/4*3
-			};
-			var easeing = 0.05;
 			
-			(function move(){
-				window.requestAnimationFrame(move);
-				context.clearRect(0,0,width,height);
-				ball.vx = (target.x - ball.x) * easeing;
-				ball.vy = (target.y - ball.y) * easeing;
-				ball.x += ball.vx;
-				ball.y += ball.vy;
-				ball.render(context);
-			})();
+			canvas.onmousemove = function(e){
+				context.beginPath();
+				context.arc(e.pageX,e.pageY,4,0,Math.PI*2,false);
+				context.fill();
+				console.log(1)
+			}
+			
 		})(document);
 	</script>
 </body>

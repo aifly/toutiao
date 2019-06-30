@@ -19,8 +19,8 @@ class Ball {
 		return this;//返回当前对象，以实现链式调用
 	}
 
-	render(context) {
-		let { x, y, r, scaleX, scaleY, fillStyle, strokeStyle, opacity } = this;
+	render(context,pointX,pointY) {
+		let { x, y, r, scaleX, scaleY, fillStyle, strokeStyle, opacity} = this;
 		context.save();
 		context.strokeStyle = strokeStyle;
 		context.fillStyle = fillStyle;
@@ -29,12 +29,16 @@ class Ball {
 		context.scale(scaleX, scaleY);
 		context.beginPath();
 		context.arc(0, 0, r, 0, Math.PI * 2, false);
+		if(pointX && pointY){
+			this.isPointInPath = context.isPointInPath(pointX,pointY);
+		}
 		context.fill();
 		context.stroke();
 		context.restore();
 
 		return this;
 	}
+
 }
 
 

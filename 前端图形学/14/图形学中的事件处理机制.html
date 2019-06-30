@@ -5,12 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=750,user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>缓冲运动</title>
+	<title>橡皮筋</title>
 	<style lang="">
 		* {
 			margin: 0;
 			padding: 0;
 		}
+
 		body {
 			font-size: 0;
 		}
@@ -18,13 +19,12 @@
 		canvas {
 			display: block;
 		}
-		
 	</style>
 </head>
 
 <body>
 	<canvas></canvas>
-	<script src='../js/ball.js'></script>
+	<script src='../js/ball.js?t=5'></script>
 	<script>
 		((document) => {
 			var canvas = document.querySelector('canvas');
@@ -32,29 +32,28 @@
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			var { width, height } = canvas;
-			var isStart = false;
 			var ball = new Ball({
-				x:100,
-				y:100,
-				r:60,
-				fillStyle:'#f90'
+				x: 200,
+				y: 200,
+				r: 80,
+				fillStyle: '#f90'
 			}).render(context);
 
-			var target = {
-				x:width / 4 * 3,
-				y:height/4*3
-			};
-			var easeing = 0.05;
-			
-			(function move(){
-				window.requestAnimationFrame(move);
+
+			canvas.addEventListener('click',e=>{
+				var x = e.pageX - canvas.offsetLeft;
+				var y = e.pageY - canvas.offsetTop;
+
 				context.clearRect(0,0,width,height);
-				ball.vx = (target.x - ball.x) * easeing;
-				ball.vy = (target.y - ball.y) * easeing;
-				ball.x += ball.vx;
-				ball.y += ball.vy;
-				ball.render(context);
-			})();
+
+				ball.render(context,x,y);
+
+				if(ball.isPointInPath){
+					console.log('小黄球被点击了 ' + ball.fillStyle);
+				}
+				
+			})
+			
 		})(document);
 	</script>
 </body>

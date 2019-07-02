@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>矩形的碰撞检测</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0
+		}
+
+		body {
+			font-size: 0;
+
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id='canvas'></canvas>
+
+	<script src='../js/reat.js?t=2'></script>
+	<script>
+		(() => {
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			var rect = new Rect({
+				x:200,
+				y:200,
+				fillStyle:"#f90"
+			}).render(context);
+			var rect1 = new Rect({
+				x: 140,
+				y: 100,
+				fillStyle: "#000"
+			}).render(context);
+			canvas.onmousedown = e =>{
+				var mouseX = e.pageX - canvas.offsetLeft;
+				var mouseY = e.pageY - canvas.offsetTop;
+				rect.render(context, mouseX, mouseY);
+				if (!rect.isPointInPath) {return;}
+				var startX = mouseX - rect.x;
+				var startY = mouseY - rect.y;
+				canvas.onmousemove =  e => {
+					context.clearRect(0, 0, width, height);
+					var disX = e.pageX - canvas.offsetLeft - startX;
+					var disY = e.pageY - canvas.offsetTop - startY;
+					rect.x = disX;
+					rect.y = disY;
+					if(rect.x + rect.w < rect1.x || rect.x> rect1.w+ rect1.x || rect.y + rect.h < rect1.y || rect.y > rect1.h+ rect1.y){
+						console.log('没有碰撞上...')
+					}else{
+						console.log('碰撞上了 ^_^ ...')
+					}
+					rect1.render(context);
+					rect.render(context);
+				}
+				canvas.onmouseup = ()=> {
+					canvas.onmousemove = null;
+					canvas.onmouseup = null;
+				}
+			}
+		})();
+	</script>
+</body>
+
+</html>

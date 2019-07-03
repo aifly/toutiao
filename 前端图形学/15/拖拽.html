@@ -24,7 +24,7 @@
 
 <body>
 	<canvas></canvas>
-	<script src='../js/ball.js?t=5'></script>
+	<script src='../js/ball.js'></script>
 	<script>
 		((document) => {
 			var canvas = document.querySelector('canvas');
@@ -38,19 +38,6 @@
 				r: 80,
 				fillStyle: '#f90'
 			}).render(context);
-
-			canvas.onmouseover = function(e){
-				var x = e.pageX - canvas.offsetLeft;
-				var y = e.pageY - canvas.offsetTop;
-
-				ball.render(context,x,y);
-				if(ball.isPointInPath){
-					canvas.style.cursor = 'pointer';
-				}else{
-					canvas.style.cursor = 'default';
-				}
-			}
-
 
 			canvas.onmousedown = function(e){
 				var mouseX = e.pageX - canvas.offsetLeft;

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>斜面坐标反弹</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0
+		}
+		body {
+			font-size: 0;
+
+		}
+		canvas{
+			box-shadow: 0 0 10px rgba(0,0,0,.5);
+		}
+	</style>
+</head>
+<body>
+	<canvas id='canvas' width="800" height='600'></canvas>
+	<script src="../js/line.js"></script>
+	<script src="../js/ball.js"></script>
+	<script src="../js/util.js"></script>
+	<script>
+		(()=>{
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+
+			var { width, height } = canvas;
+
+			var line = new Line({
+				x:100,
+				y:300,
+				x1:0,
+				y1:0,
+				x2:400,
+				y2:0,
+				lineWidth:3,
+				strokeStyle:'#000',
+				rotation:Math.PI/180 * 10
+			}).render(context);
+
+
+			var ball = new Ball({
+				x:200,
+				y:100,
+				r:50,
+				g:1,
+				fillStyle:"#f90"
+			}).render(context);
+
+			var sin = Math.sin(line.rotation),
+				cos = Math.cos(line.rotation);
+
+				var bounce = -.8;
+
+
+			(function move(){
+
+				window.requestAnimationFrame(move);
+
+				context.clearRect(0,0,width,height);
+				ball.vy += ball.g;
+				ball.y += ball.vy;
+				ball.x += ball.vx;
+
+
+
+				var rx = ball.x - line.x;
+				var ry = ball.y - line.y;
+
+				var x1 = rx * cos + ry * sin;
+				var y1 = ry * cos - rx * sin;
+
+				var vx1 = ball.vx * cos + ball.vy * sin;
+				var vy1 = ball.vy * cos - ball.vx * sin;
+
+
+				if(x1 + ball.r > line.x1 && x1 - ball.r < line.x2){
+
+					if(y1 + ball.r >0 && vy1 > y1){
+						y1 = -ball.r;
+						vy1 *= bounce;
+					}
+					if(y1 - ball.r < 0 && vy1 < y1){
+						y1 = ball.r;
+						vy1 *= bounce;
+					}
+				}
+
+				rx = x1 * cos - y1 * sin;
+				ry = y1 * cos + x1 * sin;
+
+
+				ball.vx = vx1 * cos - vy1 * sin;
+				ball.vy = vy1 * cos + vx1 * sin;
+
+				ball.x = line.x + rx;
+				ball.y = line.y + ry;
+
+
+				if(ball.x - ball.r <= 0){
+					ball.x = ball.r;
+					ball.vx *= bounce;
+				}
+				if(ball.x + ball.r > width ){
+					ball.x = width - ball.r;
+					ball.vx *= bounce;
+				}
+				if(ball.y - ball.r <=0){
+					ball.y = ball.r;
+					ball.vy *= bounce;
+				}
+				if(ball.r + ball.y > height){
+					ball.y = height - ball.r;
+					ball.vy *= bounce;
+				}
+
+				
+
+				ball.render(context);
+				line.render(context);
+			})();
+			
+		})();
+	</script>
+</body>
+</html>

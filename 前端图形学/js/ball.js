@@ -29,8 +29,8 @@ class Ball {
 		context.strokeStyle = strokeStyle;
 		context.fillStyle = fillStyle;
 		context.translate(x, y);
-		context.globalAlpha = opacity;
 		context.scale(scaleX, scaleY);
+		context.globalAlpha = opacity;
 		context.beginPath();
 		context.arc(0, 0, r, 0, Math.PI * 2, false);
 		if(pointX && pointY){

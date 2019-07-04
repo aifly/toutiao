@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3d小球</title>
+	<style lang="">
+			* {
+			margin: 0;
+			padding: 0
+		}
+		canvas{
+			box-shadow: 0 0 10px rgba(0,0,0,.5);
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id='canvas' width="800" height='600'></canvas>
+	<script src="../js/ball.js"></script>
+	<script>
+		(() => {
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+
+			var { width, height } = canvas;
+
+			//设置3维世界中的坐标
+			let x =0,y = 0,z = 0;
+			var hideX = width >> 1,
+				hideY = height >> 1;
+
+			var f1 = 200;
+
+
+			var ball = new Ball({
+				x:500,
+				y:300,
+				r:70,
+				fillStyle:"#f90"
+			});
+
+			window.addEventListener('keydown',e=>{
+				if(e.keyCode === 38){
+
+				}
+			})
+
+
+			(function move(){
+				window.requestAnimationFrame(move);
+
+				var scale = f1 / (f1 + z);
+				ball.scaleX = ball.scaleY = scale;
+
+				ball.render(context);
+			})();
+			
+			
+
+
+		
+
+		})();
+	</script>
+</body>
+
+</html>

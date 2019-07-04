@@ -41,7 +41,7 @@
 				lineWidth:3,
 				strokeStyle:'#000',
 				rotation:Math.PI/180 * 10
-			}).render(context);
+			})
 
 
 			var ball = new Ball({
@@ -50,34 +50,23 @@
 				r:50,
 				g:1,
 				fillStyle:"#f90"
-			}).render(context);
+			});
 
 			var sin = Math.sin(line.rotation),
 				cos = Math.cos(line.rotation);
-
 				var bounce = -.8;
-
-
 			(function move(){
-
 				window.requestAnimationFrame(move);
-
 				context.clearRect(0,0,width,height);
 				ball.vy += ball.g;
 				ball.y += ball.vy;
 				ball.x += ball.vx;
-
-
-
 				var rx = ball.x - line.x;
 				var ry = ball.y - line.y;
-
 				var x1 = rx * cos + ry * sin;
 				var y1 = ry * cos - rx * sin;
-
 				var vx1 = ball.vx * cos + ball.vy * sin;
 				var vy1 = ball.vy * cos - ball.vx * sin;
-
 
 				if(x1 + ball.r > line.x1 && x1 - ball.r < line.x2){
 
@@ -90,18 +79,13 @@
 						vy1 *= bounce;
 					}
 				}
-
 				rx = x1 * cos - y1 * sin;
 				ry = y1 * cos + x1 * sin;
-
-
 				ball.vx = vx1 * cos - vy1 * sin;
 				ball.vy = vy1 * cos + vx1 * sin;
 
 				ball.x = line.x + rx;
 				ball.y = line.y + ry;
-
-
 				if(ball.x - ball.r <= 0){
 					ball.x = ball.r;
 					ball.vx *= bounce;
@@ -118,8 +102,6 @@
 					ball.y = height - ball.r;
 					ball.vy *= bounce;
 				}
-
-				
 
 				ball.render(context);
 				line.render(context);

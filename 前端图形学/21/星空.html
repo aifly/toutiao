@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3d星空</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0
+		}
+		body{
+			font-size:0
+		}
+		canvas {
+			box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id='canvas' width="800" height='600'></canvas>
+	<script src="../js/ball.js?	"></script>
+	<script src="../js/util.js?	"></script>
+	<script>
+		(() => {
+			var canvas = document.querySelector('#canvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var { width, height } = canvas;
+			//设置3维世界中的坐标
+			let x = 0, y = 0, z = 0;
+			var hideX = width >> 1,
+				hideY = height >> 1;
+			var { range } = util;
+			var f1 = 400;
+			var balls = [], 
+				num = 800,
+			    bounce = -.8,
+				f1 = 250,
+				hideX = width >> 1, 
+				hideY = height >> 1,
+				maxZ3d = 2200;
+			for (var i = 0; i < num; i++) {
+				var ball = new Ball({
+					x3d:range(-1.5 * width,1.5 * width),
+					y3d: range(-1.5*height , 1.5 * height),
+					z3d: range(0,maxZ3d),
+					r: 20,
+					vz: range(-5, 5),
+					az: range(-3, -2),
+					fillStyle: 'rgb(' + 
+							(Math.random() * 255 | 0) + ',' 
+						  + (Math.random() * 255 | 0) + ',' 
+						  + (Math.random() * 255 | 0) + ')'
+				})
+				balls.push(ball);
+			}
+			(function move() {
+				window.requestAnimationFrame(move);
+				context.clearRect(0, 0, width, height);
+				context.fillRect(0, 0, width, height);
+
+				balls.sort((a, b) => {//这
+					return b.z3d - a.z3d;
+				});
+				balls.forEach(ball => {
+					ball.vz += ball.az;
+					ball.vz *= .8;
+					ball.z3d += ball.vz;
+					if(ball.z3d +  f1< 0){
+						ball.z3d += maxZ3d;
+					}
+					var scale =  f1 / (f1 + ball.z3d);
+					ball.scaleX = ball.scaleY = scale;
+					ball.x = hideX + ball.x3d * scale;
+					ball.y = hideY + ball.y3d * scale;
+				});
+				balls.forEach(ball => {
+					ball.render(context);
+				});
+				
+			})();
+		})();
+	</script>
+</body>
+
+</html>

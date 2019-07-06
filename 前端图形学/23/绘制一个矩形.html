@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个WebGl程序</title>
+	<meta name="viewport" content="width=device-width" />
+	<style>
+		*{
+			margin: 0;padding: 0;
+		}
+		body{
+			font-size:0;
+		}		
+	</style>
+</head>
+<body>
+	
+	<canvas id="webgl">
+		
+	</canvas>
+
+	<script id='vShader' type='x-shader/v-vertex'>
+		//顶点着色器代码
+
+		attribute vec4 apos;
+		//apos 是我们定义的一个位置的变量~
+		void main(){
+			gl_Position = apos;
+		}
+
+	</script>
+	<script id='fShader' type='x-shader/x-fragment'>
+		//片元着色器代码
+		void main(){
+			gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+		}
+
+	</script>
+
+	<script>
+		(function () {
+			var util = {
+				init() {
+					this.setSize();
+					this.draw()
+				},
+				setSize() {
+					var canvas = document.getElementById('webgl');
+					canvas.width = window.innerWidth;
+					canvas.height =  window.innerHeight
+					var gl = canvas.getContext('webgl');
+					this.gl = gl;
+				},
+				
+				draw() {
+					var vshareSource = document.querySelector("#vShader").innerText;
+					//片元着色器
+					var fshaderSource = document.querySelector("#fShader").innerText;
+					var { gl } = this;
+					//创建顶点着色器
+					var vertshader = gl.createShader(gl.VERTEX_SHADER);
+					//在CPU中执行顶点着色器代码
+					gl.shaderSource(vertshader, vshareSource);
+					//编译顶点着色器代码
+					gl.compileShader(vertshader);
+
+					//创建片元着色器
+					var flagShader = gl.createShader(gl.FRAGMENT_SHADER);
+					//在CPU中执行片元着色器代码
+					gl.shaderSource(flagShader, fshaderSource);
+					//编译片元着色器代码
+					gl.compileShader(flagShader);
+
+					var shaderProgram = gl.createProgram();
+					gl.attachShader(shaderProgram, vertshader);
+					gl.attachShader(shaderProgram, flagShader);
+					gl.linkProgram(shaderProgram);
+					gl.useProgram(shaderProgram);
+
+					var posPositionIndex = gl.getAttribLocation(shaderProgram,'apos');
+
+					var rectData = new Float32Array([.5,.5,-.5,.5,-.5,-.5,.5,-.5]);
+
+					//创建缓冲区
+					var buffer = gl.createBuffer();
+
+					//激活当前的缓冲区
+					gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+
+					//将顶点数据传入缓冲区
+					gl.bufferData(gl.ARRAY_BUFFER,rectData,gl.STATIC_DRAW);
+
+					///将缓冲区的数据按照一定规律传递给我们的顶点着色器中定义的变量apos
+					gl.vertexAttribPointer(posPositionIndex,2,gl.FLOAT,false,0,0);
+
+					//允许数据传递。
+					gl.enableVertexAttribArray(posPositionIndex);
+
+					gl.drawArrays(gl.LINE_LOOP	, 0, 4);
+
+				},
+			}
+			util.init();
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>矩阵平移变换</title>
+	<meta name="viewport" content="width=device-width" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-size: 0;
+		}
+	</style>
+</head>
+
+<body>
+
+	<canvas id="webgl">
+
+	</canvas>
+
+	<script id='vShader' type='x-shader/v-vertex'>
+		//顶点着色器代码
+		attribute vec4 apos;
+		void main(){
+
+			float radian = radians(10.0);
+			float cos = cos(radian);
+			float sin = sin(radian);
+
+			/*	
+				绕X轴旋转的矩阵
+				1		0    	0 	    0
+				0		cos(a)	sin(a)	0
+				0		-sin(a) cos(a)  0
+				0		0		0		1	
+			*/
+			
+			//我们把每矩阵中的每一列的数据依次传入下面的4*4的矩阵中得到计算后的矩阵。
+			mat4 mx = mat4(
+				1,0,0,0,
+				0,cos,-sin,0, 
+				0,sin,cos,0,
+				0, 0,0,1
+			);
+			/*	
+				绕Y轴旋转的矩阵
+				1		0    	0 	    0
+				0		cos(a)	sin(a)	0
+				0		-sin(a) cos(a)  0
+				0		0		0		1	
+			*/
+			mat4 my = mat4(
+				cos,0,-sin ,0,
+				0, 1, 0 , 0, 
+				sin, 0,cos,0,
+				0, 0,0, 1
+			);
+
+			gl_Position = apos * mx * my;
+		}
+
+	</script>
+	<script id='fShader' type='x-shader/x-fragment'>
+		//片元着色器代码
+		void main(){
+			gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+		}
+
+	</script>
+
+	<script>
+		(function () {
+			var util = {
+				init() {
+					this.setSize();
+					this.draw()
+				},
+				setSize() {
+					var canvas = document.getElementById('webgl');
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight
+					var gl = canvas.getContext('webgl');
+					this.gl = gl;
+				},
+
+				draw() {
+					var vshareSource = document.querySelector("#vShader").innerText;
+					//片元着色器
+					var fshaderSource = document.querySelector("#fShader").innerText;
+					var { gl } = this;
+					//创建顶点着色器
+					var vertshader = gl.createShader(gl.VERTEX_SHADER);
+					//在CPU中执行顶点着色器代码
+					gl.shaderSource(vertshader, vshareSource);
+					//编译顶点着色器代码
+					gl.compileShader(vertshader);
+					//创建片元着色器
+					var flagShader = gl.createShader(gl.FRAGMENT_SHADER);
+					//在CPU中执行片元着色器代码
+					gl.shaderSource(flagShader, fshaderSource);
+					//编译片元着色器代码
+					gl.compileShader(flagShader);
+
+					var shaderProgram = gl.createProgram();
+					gl.attachShader(shaderProgram, vertshader);
+					gl.attachShader(shaderProgram, flagShader);
+					gl.linkProgram(shaderProgram);
+					gl.useProgram(shaderProgram);
+					var posPositionIndex = gl.getAttribLocation(shaderProgram, 'apos');
+					var data = [
+						.3, .3, .3,//
+						-.3, .3, .3,//
+						-.3, -.3, .3,//
+						.3, -.3, .3,//
+						//上面四个点定义的是正方体的后面的一个平面 
+						.3, .3, -.3,//
+						-.3, .3, -.3,//
+						-.3, -.3, -.3,//
+						.3, -.3, -.3,//
+						//上面四个点定义的是正方体的正前方的一个平面
+
+						.3, .3, .3,//
+						.3, .3, -.3,//
+
+						-.3, .3, .3,//
+						-.3, .3, -.3,//
+						
+						-.3, -.3, .3,//
+						-.3, -.3, -.3,//
+						
+						.3, -.3, .3,//
+						.3, -.3, -.3,//
+						//这八个顶点依次对应的是两个面对应的前后坐标。
+					];
+
+					var rectData = new Float32Array(data);
+					//创建缓冲区
+					var buffer = gl.createBuffer();
+					//激活当前的缓冲区
+					gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+					//将顶点数据传入缓冲区
+					gl.bufferData(gl.ARRAY_BUFFER, rectData, gl.STATIC_DRAW);
+
+					///将缓冲区的数据按照一定规律传递给我们的顶点着色器中定义的变量apos
+					gl.vertexAttribPointer(posPositionIndex, 3, gl.FLOAT, false, 0, 0);
+					//允许数据传递。
+					gl.enableVertexAttribArray(posPositionIndex);
+
+					gl.drawArrays(gl.LINE_LOOP, 0, 4);
+					gl.drawArrays(gl.LINE_LOOP, 4, 4);
+					gl.drawArrays(gl.LINES, 8, 8);
+
+				},
+			}
+			util.init();
+		})();
+	</script>
+</body>
+
+</html>

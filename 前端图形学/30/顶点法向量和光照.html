@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>从源代码看threejs</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-size: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<script src='../js/three.js'></script>
+	<script src='../js/OrbitControls.js'></script>
+
+
+	<script>
+		((document) => {
+
+			var util = {
+				viewW: window.innerWidth,
+				viewH: window.innerHeight,
+				init() {
+					var scene = new THREE.Scene();
+					var camera = new THREE.PerspectiveCamera(60, this.viewW / this.viewH, 0.1, 1000);
+					camera.position.z = 10;
+					var renderer = new THREE.WebGLRenderer();
+					renderer.setSize(this.viewW, this.viewH);
+					renderer.setPixelRatio(window.devicePixelRatio);
+					document.body.appendChild(renderer.domElement);
+
+					var geometry = new THREE.BufferGeometry();
+					var vertices = new Float32Array([
+						0, 0, 0,//顶点一的(x,y,z)坐标
+						2, 0, 0,//顶点二的(x,y,z)坐标
+						0, 3, 0,//顶点三的(x,y,z)坐标
+						0, 0, 0,//顶点四的(x,y,z)坐标
+						0, 0, 4,//顶点五的(x,y,z)坐标
+						2, 0, 0//顶点六的(x,y,z)坐标
+					]);
+
+					var normalData = new Float32Array([
+						0,0,1,
+						0,0,1,
+						0,0,1,
+
+						0,1,0,
+						0,1,0,
+						0,1,0
+					]);
+
+
+					//类型化数组中的每三项作为一个顶点数据。
+					var attribute = new THREE.BufferAttribute(vertices, 3);
+					
+					var normals = new THREE.BufferAttribute(normalData, 3);
+					geometry.attributes.normal = normals;
+
+
+					geometry.attributes.position = attribute;
+					var m = new THREE.MeshLambertMaterial({
+						color:'#f90',
+						side: THREE.DoubleSide,
+
+					});
+					var mesh = new THREE.Mesh(geometry, m);
+					var ambientLight = new THREE.AmbientLight('#fff',.5);
+					ambientLight.position.y = 10;
+					ambientLight.position.x = 10;
+					ambientLight.position.z = 40;
+
+					var pointLight = new THREE.PointLight('#f00');
+					pointLight.position.z = 20;
+					pointLight.position.y = 10;
+					var aHelper = new THREE.AxesHelper(10);
+					var controls = new THREE.OrbitControls(camera, renderer.domElement);
+					scene.add(mesh, ambientLight, aHelper, pointLight);
+					(function move() {
+						requestAnimationFrame(move);
+						controls.update();
+						renderer.render(scene, camera);
+					})()
+
+				},
+			};
+
+			util.init();
+
+			/*
+				法向量和光照~
+				
+			*/
+
+
+		})(document);
+	</script>
+</body>
+
+</html>

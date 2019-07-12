@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>演示页面</title>
+	<script src="../js/three.js"></script>
+	
+	<script src="../js/OrbitControls.js"></script>
+</head>
+
+<body>
+</body>
+<script>
+	var SEPARATION = 200,
+		AMOUNTX = 60,
+		AMOUNTY = 60;
+	var container, stats;
+	var camera, scene, renderer, controls;
+	var particles, particle, count = 0;
+	var windowHalfX = window.innerWidth / 2;
+	var windowHalfY = window.innerHeight / 2;
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+
+	function init() {
+		container = document.createElement('div');
+		document.body.appendChild(container);
+		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+		scene = new THREE.Scene();
+
+        /**
+         * 设置光源
+         * */
+		//点光源
+		var point = new THREE.PointLight(0xffffff);//白光
+		point.position.set(1200, 1200, 1200);//点光源位置
+		scene.add(point);//点光源添加进场景
+		//环境光
+		var ambient = new THREE.AmbientLight(0x999999);//白光
+		scene.add(ambient);//环境光添加进场景
+
+		//模型
+		var cubeGeometry = new THREE.CubeGeometry(1000, 1000, 1000);
+		var cubeMaterial = new THREE.MeshLambertMaterial({
+			color: 0xffff00
+			//side:THREE.DoubleSide
+		});//材质对象
+		var cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);//网格模型对象
+		cubeMesh.translateY(500);
+		scene.add(cubeMesh);//正方体网格模型添加到场景中
+
+		//粒子
+		particles = new Array();
+		var PI2 = Math.PI * 2;
+		var material = new THREE.SpriteMaterial({
+			color: 0xffffff,
+			program: function (context) {
+				context.beginPath();
+				context.arc(0, 0, 0.5, 0, PI2, true);
+				context.fill();
+			}
+		});
+
+		var i = 0;
+		for (var ix = 0; ix < AMOUNTX; ix++) {
+			for (var iy = 0; iy < AMOUNTY; iy++) {
+				particle = particles[i++] = new THREE.Sprite(material);
+				particle.position.x = ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2);
+				particle.position.z = iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2);
+				scene.add(particle);
+			}
+		}
+
+        /**
+         * 创建渲染器对象
+         * */
+		renderer = new THREE.WebGLRenderer();
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		container.appendChild(renderer.domElement);
+
+		window.addEventListener('resize', onWindowResize, false);
+
+		//交互控制器
+        /**
+         * 鼠标键盘事件监听器
+         * */
+		controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.1;
+		controls.screenSpacePanning = true;
+		controls.minDistance = 0;
+		controls.maxDistance = 5000;
+		controls.maxPolarAngle = 2 * Math.PI;
+
+        /**
+         * 模型拾取
+         * */
+		mouse.x = -10000;
+		mouse.y = -10000;
+
+		function onMouseMove(event) {
+			// calculate mouse position in normalized device coordinates
+			// (-1 to +1) for both components
+			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+		}
+
+
+		window.addEventListener('mousemove', onMouseMove, false);
+	}
+
+	function pickUp() {
+		// update the picking ray with the camera and mouse position
+		raycaster.setFromCamera(mouse, camera);
+		// calculate objects intersecting the picking ray
+		var intersects = raycaster.intersectObjects(scene.children);
+		for (var i = 0; i < intersects.length; i++) {
+			intersects[i].object.material.color.set(0xff00ff);
+		}
+		if (intersects.length === 0) {
+			scene.children[2].material.color.set(0xffff00);
+			for (var i = 3; i < scene.children.length; i++) {
+				scene.children[i].material.color.set(0xffffff);
+			}
+		}
+		renderer.render(scene, camera);
+	}
+
+
+	function onWindowResize() {
+		windowHalfX = window.innerWidth / 2;
+		windowHalfY = window.innerHeight / 2;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	}
+
+	var rad = 0;
+	function render() {
+		camera.position.set(2600, 500, 2600);
+		camera.up = new THREE.Vector3(0, 1, 0);
+		camera.lookAt(new THREE.Vector3(0, 500, 0));
+
+		var i = 0;
+		for (var ix = 0; ix < AMOUNTX; ix++) {
+			for (var iy = 0; iy < AMOUNTY; iy++) {
+				particle = particles[i++];
+				particle.position.y = (Math.sin((ix + count) * 0.2) * 500) +
+					(Math.sin((iy + count) * 0.2) * 500);
+				particle.scale.y = (Math.sin((ix + count) * 0.3) + 1) * 3 +
+					(Math.sin((iy + count) * 0.3) + 1) * 3;
+				particle.scale.x = (Math.sin((ix + count) * 0.3) + 1) * 3 +
+					(Math.sin((iy + count) * 0.3) + 1) * 3;
+			}
+			scene.children[2].translateY(Math.cos(ix + count / 2) * 5);
+		}
+		//模型旋转
+		scene.children[2].rotateY(Math.PI / 180);
+		camera.position.x = 2600 * Math.cos(Math.PI / 180 * rad);
+		camera.position.z = -2600 * Math.sin(Math.PI / 180 * rad);
+		//点光源位置
+		scene.children[0].position.x = 1200 * Math.cos(Math.PI / 180 * rad + Math.PI * 0.1);
+		scene.children[0].position.z = -1200 * Math.sin(Math.PI / 180 * rad + Math.PI * 0.1);
+
+		controls.update();
+		renderer.render(scene, camera);
+		count += 0.1;
+		rad += 0.2;
+	}
+
+	function animate() {
+		requestAnimationFrame(animate);
+		render();
+		pickUp();
+	}
+
+	init();
+	animate();
+</script>
+
+</html>

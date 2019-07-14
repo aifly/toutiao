@@ -25,7 +25,6 @@
 			var context = canvas.getContext('2d');
 
 			var { width, height } = canvas;
-
 			//设置3维世界中的坐标
 			let x =0,y = 0,z = 0;
 			var hideX = width >> 1,
@@ -40,7 +39,6 @@
 			});
 
 			var mouse = {x:0,y:0}
-
 			window.addEventListener('keydown',e=>{
 				if(e.keyCode === 38)z+=5;
 				if(e.keyCode === 40)z -=5;
@@ -53,23 +51,17 @@
 				window.requestAnimationFrame(move);
 				context.clearRect(0,0,width,height);
 				
-				var scale = f1 / (f1 + z);
-
-				ball.scaleX = ball.scaleY = scale;
-
-				x = mouse.x - hideX;
-				y = mouse.y - hideY;
-
-				ball.x = hideX + x * scale;
-				ball.y = hideY + y * scale;
-
-				ball.render(context);
+				if(f1+z>0){//因为f1+z作了除数，这里记得要作下判断
+					var scale = f1 / (f1 + z);
+					
+					ball.scaleX = ball.scaleY = scale;
+					x = mouse.x - hideX;
+					y = mouse.y - hideY;
+					ball.x = hideX + x * scale;
+					ball.y = hideY + y * scale;
+					ball.render(context);
+				}
 			})();
-			
-
-
-		
-
 		})();
 	</script>
 </body>

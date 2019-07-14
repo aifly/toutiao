@@ -46,7 +46,8 @@
 					vx:range(-6,6),
 					vy:range(-3,-6),
 					vz:range(-5,5),
-					fillStyle: 'rgb(' + (Math.random() * 255 | 0) + ',' + (Math.random() * 255 | 0) + ',' + (Math.random() * 255 | 0) + ')'
+					fillStyle: 'rgb(' + (Math.random() * 255 | 0) + ',' + 
+					(Math.random() * 255 | 0) + ',' + (Math.random() * 255 | 0) + ')'
 				})
 				balls.push(ball);
 			}
@@ -60,7 +61,7 @@
 					return b.z3d - a.z3d;
 				})
 				balls.forEach(ball=>{
-					
+
 					ball.vy += g;//重力
 					ball.x3d += ball.vx;
 					ball.y3d += ball.vy;

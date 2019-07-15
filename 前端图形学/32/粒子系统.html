@@ -42,18 +42,17 @@
 					
 					var { range } = util;
 					 
-					var map = new THREE.TextureLoader().load('../img/ball.png');
+					var group = new THREE.Group();
 
 
 					var plane = new THREE.PlaneGeometry(100,300,10);
 					var mPlane = new THREE.MeshBasicMaterial({color:"#555",side:THREE.DoubleSide});
-					
 					var planeMesh = new THREE.Mesh(plane,mPlane)
 					planeMesh.rotation.x = Math.PI/2
 					planeMesh.position.y = -3;
 
-					var group = new THREE.Group();
 
+					var map = new THREE.TextureLoader().load('../img/ball.png');
 					for(var i = 0 ; i < 500 ;i++){
 						var m = new THREE.SpriteMaterial({ map });
 						var sprite = new THREE.Sprite(m);
@@ -71,52 +70,28 @@
 					pointLight.position.y = 0;
 					pointLight.position.x = 0;
 					pointLight.position.z = 10;
-					var aHelper = new THREE.AxesHelper(10);
 					scene.add( group,pointLight, new THREE.AmbientLight("#00f", .8), planeMesh);
 					var controls = new THREE.OrbitControls(camera, renderer.domElement);
-					var angle = .03;
-
 
 					(function move() {
 						requestAnimationFrame(move);
-						//camera.position.y = Math.sin(angle)*2;
-						//mesh.rotation.x += angle;
 						group.children.forEach((sprite,i)=>{
 							sprite.position.x += sprite.vx;
 							sprite.position.y += sprite.vy;
 							sprite.vy += sprite.g;
+							//小球到达水平面开始反弹
 							if(sprite.position.y <=-3){
 								sprite.position.y = -3;
 								sprite.vy *= -.8;
 							}
 							
 						})
-						
 						controls.update();
 						renderer.render(scene, camera);
 					})();
 				},
 			};
 			zmitiUtil.init();
-
-			`
-				
-				上章节回顾
-				1、Geometry类的基本使用方法。
-				2、Vector3类的源源码分析。
-				3、face3类的源码分析。
-				我们基本上了解了各个类的基本工作原理，对threejs认识更加深刻。
-
-				本章目标
-				精灵类Sprite的源码分析
-				SpriteMaterial的源码分析
-				基于threejs精灵的扩展示例
-
-
-				
-				
-			`
-
 
 		})(document);
 	</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			font-size: 0;
+		}
+
+		#container {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container"></div>
+	<script src='http://game.webxinxin.com/phaser.min.js'></script>
+	<script>
+		(function (document) {
+
+
+			class Base {
+				constructor() {
+					this.game = Base.game;
+				}
+			}
+
+			class Boot extends Base {
+				constructor() {
+					super();
+				}
+				preload() {
+					var game = this.game;
+					game.load.image('loading', '../img/phaser/preloader.gif');
+				}
+				create() {
+					//this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+					///this.game.state.start('preload')
+				}
+				update() {
+				}
+			}
+
+			var zmitiUtil = {
+				viewW: window.innerWidth,
+				viewH: window.innerHeight,
+				init() {
+					this.initGame();
+				},
+				initGame() {
+					let game = new Phaser.Game(288, 505, Phaser.CANVAS, 'container');
+					if (!game.device.desktop) {
+					}
+
+					//
+
+					Base.game = game;
+					game.state.add('boot', Boot);
+					game.state.start('boot')
+			
+				},
+
+			};
+			zmitiUtil.init();
+
+		})(document);
+	</script>
+</body>
+
+</html>

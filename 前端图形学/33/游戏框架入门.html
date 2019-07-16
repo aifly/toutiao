@@ -32,14 +32,11 @@
 	<script src='http://game.webxinxin.com/phaser.min.js'></script>
 	<script>
 		(function (document) {
-
-
 			class Base {
 				constructor() {
 					this.game = Base.game;
 				}
 			}
-
 			class Boot extends Base {
 				constructor() {
 					super();
@@ -47,15 +44,18 @@
 				preload() {
 					var game = this.game;
 					game.load.image('loading', '../img/phaser/preloader.gif');
+					game.load.image('background', '../img/phaser/background.png');
 				}
 				create() {
-					//this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-					///this.game.state.start('preload')
+					var {game} = this;
+					var bg = game.add.tileSprite(0, 0,game.width,game.height,  'background');
+
+					bg.autoScroll(-20, 0);
+					var sprite = game.add.sprite(0, game.height/2,  'loading');
 				}
 				update() {
 				}
 			}
-
 			var zmitiUtil = {
 				viewW: window.innerWidth,
 				viewH: window.innerHeight,
@@ -64,17 +64,10 @@
 				},
 				initGame() {
 					let game = new Phaser.Game(288, 505, Phaser.CANVAS, 'container');
-					if (!game.device.desktop) {
-					}
-
-					//
-
 					Base.game = game;
 					game.state.add('boot', Boot);
 					game.state.start('boot')
-			
 				},
-
 			};
 			zmitiUtil.init();
 

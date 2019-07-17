@@ -47,11 +47,11 @@
 					game.load.image('background', '../img/phaser/background.png');
 				}
 				create() {
-					var {game} = this;
-					var bg = game.add.tileSprite(0, 0,game.width,game.height,  'background');
+					var { game } = this;
+					var bg = game.add.tileSprite(0, 0, game.width, game.height, 'background');
 					this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 					bg.autoScroll(-20, 0);
-					var sprite = game.add.sprite(0, game.height/2,  'loading');
+					var sprite = game.add.sprite(0, game.height / 2, 'loading');
 				}
 				update() {
 				}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片拖拽交换位置</title>
+	<style>
+		*{margin: 0;padding:0;}
+		img{vertical-align: top;width: 100%;}
+		ul{
+			width: 420px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			margin: 40px auto;
+			position: relative;
+			height: 500px;
+			justify-content: space-between;;
+		}
+		li{
+			list-style: none;
+			width: 200px;
+			height: 134px;
+		}
+		li.active{
+			border:3px dashed #F00;
+			box-sizing: border-box;;
+		}
+		#btn{
+			position: absolute;
+			top: 10px;
+			left: 48%;
+			opacity:0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<ul>
+			<li><img draggable='false' src="./imgs/4.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/5.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/6.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/7.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/8.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/9.jpg" alt=""></li>
+		</ul>
+
+		<button id='btn'>布局转换</button>
+	</div>
+
+	<script>
+		((document)=>{
+
+			var container = document.querySelector("#container");
+			var ul = container.querySelector('ul');
+			var lis = [...ul.querySelectorAll('li')];
+
+			var liSize = {
+				width:200,
+				height:134
+			}
+
+			var res = [];
+
+			var target = null;
+
+
+			var util = {
+				init(){
+
+					document.querySelector('#btn').onclick = e =>{
+						this.layout();
+					}
+					this.layout();
+				},
+				position:[],//依次存放所有元素的位置的数组
+				layout(){//布局转换
+					lis.forEach(li=>{
+						li.style.left = li.offsetLeft  + 'px';
+						li.style.top = li.offsetTop  + 'px';
+						this.position.push({
+							x:li.offsetLeft,
+							y:li.offsetTop
+						})
+
+					});
+
+					lis.forEach((li,i)=>{
+						li.style.position = 'absolute';
+						this.drag(li,i);
+					});
+				},
+				hitTest(rect,rect1){
+					//碰撞检测
+					var liSize = {
+						width:200,//图片的宽
+						height:134//图片的高
+					}
+					if(rect.offsetLeft + liSize.width < rect1.style.left || rect.offsetLeft > liSize.width + rect1.offsetLeft || rect.
+						offsetTop + liSize.height < rect1.offsetTop || rect.offsetTop > liSize.height+ rect1.offsetTop){
+						return false;
+					}else{
+						return true;
+					}
+				},
+				drag(obj,index){
+					obj.index = index;
+
+
+					obj.onmousedown = e =>{
+
+						lis.forEach(li=>{
+							li.style.zIndex =li === obj ? 2 :1;
+						})
+
+						var disX = e.pageX - obj.offsetLeft;
+						var disY = e.pageY - obj.offsetTop;
+
+						lis.forEach(li=>{
+							li.style.transition = '0s';
+						});
+						obj.style.transition = '0s';
+
+						document.onmousemove = e=>{
+							var x  = e.pageX - disX;
+							var y = e.pageY - disY;
+							
+							lis.forEach(li=>{
+								if(li !== obj){
+									li.dis = Math.sqrt((li.offsetLeft - obj.offsetLeft)**2+(li.offsetTop - obj.offsetTop)**2);
+								}
+							});
+
+							target = lis.filter(li=>{
+								return li.dis !== undefined && li !== obj;
+							}).sort((a,b)=>{
+								return a.dis > b.dis;
+							})[0];
+
+							lis.forEach((li,i)=>{
+								if(li === target && this.hitTest(obj,li) ){
+									li.classList.add('active');
+								}else{
+									li.classList.remove('active')
+								}
+							})
+
+							obj.style.left = x + 'px';
+							obj.style.top = y + 'px';
+						}
+						document.onmouseup = e=>{
+							document.onmouseup = document.onmousemove = null;
+
+							lis.forEach((li,i)=>{
+								if(li === target && this.hitTest(obj,li) ){
+									li.style.left = this.position[obj.index].x + 'px';
+									li.style.top = this.position[obj.index].y + 'px';
+									obj.style.left = this.position[ target.index].x + 'px';
+									obj.style.top = this.position[ target.index].y + 'px';
+
+									var index=  obj.index;
+									obj.index = target.index;
+									li.index = index;
+
+									li.classList.remove('active')
+									li.style.transition = '.3s';
+									obj.style.transition = '.3s';
+
+								}else if(li === target && !this.hit(obj,li)){
+									obj.style.transition = '.3s';
+									obj.style.left = this.position[obj.index].x + 'px';
+									obj.style.top = this.position[obj.index].y + 'px';
+								}
+							})
+							
+						}
+					}
+				}
+			}
+
+			util.init();
+
+		})(document);
+	</script>
+</body>
+</html>

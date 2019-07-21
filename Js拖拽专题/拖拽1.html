@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		拖拽
+	</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		#box{
+			width: 100px;
+			height: 100px;
+			background: red;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id='box'></div>
+	<script>
+		((document)=>{
+
+			var box = document.querySelector('#box');
+			box.onmousedown = e =>{
+
+				console.log(e);
+				var disX = e.pageX - box.offsetLeft;
+				var disY = e.pageY - box.offsetTop;
+
+				document.onmousemove = e =>{
+
+					box.style.left = e.pageX - disX + 'px';
+					box.style.top = e.pageY - disY  + 'px';
+
+				};
+				document.onmouseup = e =>{
+					document.onmouseup = null;
+					document.onmousemove = null;
+				}
+			}
+
+		})(document)
+	</script>
+</body>
+</html>

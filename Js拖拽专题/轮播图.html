@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图</title>
+
+
+	<style>
+		*{
+			margin: 0;padding: 0;
+
+		}
+		li{
+			list-style: none;
+		}
+		img{
+			vertical-align: top;
+		}
+		#container{
+			width: 520px;
+			height: 280px;
+			margin: 20px auto;
+			overflow: hidden;
+
+		}
+		#container ul{
+			height: 280px;
+			display: flex;
+			flex-direction:row;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id='container'>
+		<ul>
+			<li><img draggable='false' src="./imgs/1.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/2.jpg" alt=""></li>
+			<li><img draggable='false' src="./imgs/3.jpg" alt=""></li>
+		</ul>
+	</div>
+
+	<script>
+		((document)=>{
+
+			var container = document.querySelector('#container');
+			var ul = container.querySelector('ul');
+			var li =  ul.querySelectorAll('li');
+			var containerW = 520;//单张图片的宽。
+			var util = {
+				init(){
+					this.layout();
+					this.swipe();
+				},
+				layout(){
+					//设置ul的宽度
+					ul.style.width = li.length * containerW + 'px';
+				},
+				iNow:0,//定义当前显示的索引
+				swipe(){
+					ul.onmousedown = e =>{
+						var startX = e.pageX ;
+						ul.style.transition = '0s';
+						document.onmousemove = e=>{
+							
+							var x = e.pageX - startX + this.iNow*containerW;
+
+							if(x > 0 ){
+								x = 0 ;
+							}
+							ul.style.transform = 'translateX('+x+'px)';
+						}
+						document.onmouseup = e=>{
+
+							if(e.pageX - startX > containerW/3){
+								this.iNow++;
+							}else if(startX - e.pageX > containerW/3){
+								this.iNow--;
+							}
+
+							ul.style.transition = '.3s';
+							ul.style.transform = 'translateX('+(this.iNow*containerW)+'px)';
+							document.onmouseup = document.onmousemove = null;
+						}
+					}
+				}
+			}
+			util.init();
+
+		})(document);
+	</script>
+</body>
+</html>

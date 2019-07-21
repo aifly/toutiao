@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义滚动条</title>
+
+	<style>
+		*{margin: 0;padding: 0;}
+		li{
+			list-style: none;
+
+		}
+
+		
+		#container:before{
+			content:'';
+			position: absolute;
+			width: 10px;
+			height: 100%;
+			background: #ccc;
+			z-index: 10;
+			right: 0;
+			top: 0;		
+		}
+
+		#scrollbar{
+			position: absolute;
+			right: 1px;
+			width: 8px;
+			background: #444;
+			top: 0;
+			height: 50px;
+			z-index: 12;
+			cursor: pointer;
+		}
+
+		#container{
+			width: 400px;
+			height: 500px;
+			margin: 10px auto;
+			overflow: hidden;
+			position: relative;
+		}
+
+		li{
+			width: 100%;
+			height: 400px;
+			text-align: center;;
+			font-size:40px;
+			line-height: 400px;
+		}
+		li:nth-of-type(1){background: red;}
+		li:nth-of-type(2){background: blue;}
+		li:nth-of-type(3){background: green;}
+		li:nth-of-type(4){background: yellowgreen;}
+		li:nth-of-type(5){background: #f90;}
+		li:nth-of-type(6){background: #f0f;}
+		li:nth-of-type(7){background: #abcdef;}
+
+	</style>
+</head>
+<body>
+	<div id="container">
+
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+		</ul>
+		
+		<div id='scrollbar'></div>
+	</div>
+	<script>
+		((document)=>{
+
+			var util = {
+
+				init(){
+					var container = document.querySelector('#container');
+					var ul = container.querySelector('ul');
+					var ulH = ul.offsetHeight;
+					var containerH = container.offsetHeight;
+					var scrollbar = document.querySelector('#scrollbar');
+					var scrollBarH = scrollbar.offsetHeight;
+
+					scrollbar.onmousedown = e =>{
+						var disY = e.pageY -	scrollbar.offsetTop;
+						e.preventDefault();
+						document.onmousemove = e=>{
+
+							var y = e.pageY - disY;
+							y <=0 && (y = 0);
+							y + scrollBarH > containerH && ( y =  containerH - scrollBarH);
+							scrollbar.style.top = y +  'px';
+							var k = y / ( containerH - scrollBarH);
+
+							ul.style.transform = 'translateY('+-k*(ulH-containerH)+'px)'
+						}
+						document.onmouseup = e=>{
+							document.onmouseup =document.onmousemove = null;
+						}
+					}
+
+				},
+
+			};
+
+			util.init();
+
+		})(document);
+	</script>
+</body>
+</html>

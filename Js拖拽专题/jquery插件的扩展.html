@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+	<title></title>
+	<style>
+		*{
+			margin: 0;padding: 0;
+		}
+		#container{
+			position: absolute;
+			width: 100vw;
+			height: 100vh;
+			overflow: hidden;
+		}
+		ul{
+			height: 600vh;
+			transition: .3s;
+		}
+		li{
+			list-style: none;;
+			width: 100vw;
+			height: 100vh;
+			font-size: 100px;
+			font-weight: bold;
+			text-align: center;;
+			line-height: 100vh;
+			color:#fff;
+		}
+		li:nth-of-type(1){background: red;}
+		li:nth-of-type(2){background: blue;}
+		li:nth-of-type(3){background: green;}
+		li:nth-of-type(4){background: yellowgreen;}
+		li:nth-of-type(5){background: #f90;}
+		li:nth-of-type(6){background: #f0f;}
+	</style>
+</head>
+<body>
+
+	<div id='container'>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+	<script src='https://cdn.bootcss.com/jquery/3.4.1/jquery.js'></script>
+	<script>
+
+		((document,$)=>{
+
+			$.fn.swipe = function(type,fn){
+				if(type === 'up'){//向上滑动
+
+					return this.each((i,item)=>{
+						$(item).on('touchstart',e=>{
+							var starttime = new Date().getTime();
+							var startX = e.changedTouches[0].pageX;
+							var startY = e.changedTouches[0].pageY;
+
+							$(document).on('touchmove',e=>{
+
+							}).on('touchend',e=>{
+								var endtime = new Date().getTime();
+								var endX = e.changedTouches[0].pageX;
+								var endY = e.changedTouches[0].pageY;
+								var disX =  Math.abs(startX -  endX);
+								var disY =  startY -  endY;
+								var disTime = endtime - starttime;
+								if(disY> 30 && disY / disX > 1 && disTime < 300){
+									fn && fn()
+								}
+							});
+
+						});
+					})
+
+				}else if(type === 'down'){
+					return this.each((i,item)=>{
+						$(item).on('touchstart',e=>{
+							var starttime = new Date().getTime();
+							var startX = e.changedTouches[0].pageX;
+							var startY = e.changedTouches[0].pageY;
+
+							$(document).on('touchmove',e=>{
+
+							}).on('touchend',e=>{
+								var endtime = new Date().getTime();
+								var endX = e.changedTouches[0].pageX;
+								var endY = e.changedTouches[0].pageY;
+								var disX =  Math.abs(startX -  endX);
+								var disY =    endY - startY;
+								var disTime = endtime - starttime;
+								if(disY > 30 && disY / disX > 1 && disTime < 300){
+									fn && fn()
+								}
+							});
+
+						});
+					})
+
+				}
+			}
+
+		})(document,$);
+		$(function(){
+			var ul = $('#container ul');
+
+			var iNow = 0;
+
+			ul.swipe('up',()=>{
+				console.log('up');
+				iNow++;
+				iNow = Math.min(5,iNow)
+				ul.css({transform:'translateY('+-iNow * 100 +'vh)'});
+			}).swipe('down',e=>{
+				iNow--;
+				iNow = Math.max(0,iNow)
+				ul.css({transform:'translateY('+-iNow * 100 +'vh)'});
+			})
+		})	
+
+	</script>
+</body>
+</html>

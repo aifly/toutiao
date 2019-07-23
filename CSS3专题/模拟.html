@@ -13,12 +13,8 @@
 			border:1px solid red;
 			position: relative;
 		}
-		.container:hover #box{
-			transform:translateX(100px) rotate(180deg) ;
-		}
-		.container:hover #box1{
-			transform: rotate(180deg) translateX(100px);
-		}
+		
+		
 		#box,#box1{
 			
 			transition:2s;
@@ -27,13 +23,7 @@
 			background: red;
 			margin: 60px 30px 0 260px;
 		}
-		#box1{
-			position: absolute;
-			background: #f90;
-			top: 120px;
-			left: 0px;
-		}
-		.point{
+			.point{
 			width: 4px;
 			height: 4px;
 			border-radius: 2px;
@@ -43,28 +33,39 @@
 			top:230px;
 			z-index: 10;
 		}
-		.style{
+		#box1{
 			position: absolute;
-			left: 10px;		
+			background: #f90;
+			top: 120px;
+			left: 0px;
 		}
-		.style1{
+		
+		button{
 			position: absolute;
-			left: 10px;		
-			top: 300px;
+			left: 50%;
+			top: 10%;
 		}
 	</style>
 </head>
 <body>
 	<div class='container'>
-		<div class='style'>
-			transform:translateX(100px) rotate(180deg)
-		</div>
-		<div id='box'></div>
-		<div class='point'></div>
-		<div class='style1'>
-			transform: rotate(180deg) translateX(100px);
-		</div>
 		<div id='box1'></div>
+		<div class='point'></div>
+		<button>开始</button>
+
 	</div>
+
+	<script>
+		(function(){
+			var box = document.querySelector('#box1')
+			var btn = document.querySelector('button');
+			btn.onclick = e=>{
+				box.style.transform  =  ' rotate(0) translate(100px)';
+				setTimeout(function(){
+					box.style.transform  =  ' rotate(180deg) translate(100px)';
+				},2100)
+			}
+		})()
+	</script>
 </body>
 </html>

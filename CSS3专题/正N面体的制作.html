@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>正N面体的制作</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	
+		html,
+		body {
+
+
+			background: #000;
+	
+			width: 100%;
+	
+			height: 100%;
+	
+			font-size: 30px;
+	
+		}
+	
+		.zmiti-box {
+	
+			width: 100px;
+	
+			height: 100px;
+	
+			position: absolute;
+	
+			left: 0;
+			top: 200px;
+			perspective: 1800px;
+	
+			left: 50%;
+			;
+	
+			margin-left: -50px;
+	
+		}
+	
+		.zmiti-box section {
+			transform-style: preserve-3d;
+	
+			position: relative;
+	
+			width: 100%;
+	
+			height: 100%;
+	
+			left: 0;
+	
+			transition: 5s;
+	
+		}
+	
+		.zmiti-box .zmiti-box-item {
+	
+			position: absolute;
+	
+			left: 0;
+	
+			top: 0;
+	
+			width: 100%;
+	
+			height: 100%;
+	
+			line-height: 100px;
+	
+			color: #fff;
+	
+			font-size: 50px;
+	
+			text-align: center;
+	
+		}
+	</style>
+</head>
+<body>
+
+	<div class='zmiti-box'>
+		<section></section>
+	</div>
+	<script>
+		var zmitiUtil = {
+
+				length: 10,//我要创建正10面体
+				init() {
+					this.createElement();
+					this.bindEvent();
+				},
+				createElement() {
+					this.box = document.querySelector('.zmiti-box section');
+				
+					var html = '';
+					var elWidth = 100;//元素的宽度,也可以通过获取元素的clientWidth,我这就硬编码写死了。
+					var angle = 360 / this.length;
+					var translateZ = Math.tan(Math.PI / 180 * (180 - angle) / 2) * elWidth / 2;
+					//动态生成我们所需要的所有的面。
+					for (var i = 0; i < this.length; i++) {
+						html += `<div class='zmiti-box-item' 
+						style="transform:rotateY(${i * 360 / this.length}deg)
+						 translateZ(${translateZ}px);
+						 background:rgb(${Math.random() * 255 | 0},${Math.random() * 255 | 0},${Math.random() * 255 | 0})">${i + 1}</div>`;
+					};
+					this.box.innerHTML = html;
+				},
+				bindEvent() {
+					document.body.addEventListener('touchstart', () => {
+						this.box.style.transform = 'rotateY(360deg) rotateX(60deg)';
+					});
+					document.body.addEventListener('mousedown', () => {
+						this.box.style.transform = 'rotateY(360deg) rotateX(60deg)';
+					});
+				}
+			};
+
+			window.onload = function(){
+
+				zmitiUtil.init();
+			}
+
+	</script>
+	
+</body>
+</html>

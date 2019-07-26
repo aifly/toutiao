@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3D折纸基础布局</title>
+	<style lang="">
+		*{margin: 0;padding:0;}
+		.box{
+			width: 520px;
+			height: 280px;
+			margin: 50px auto;
+			position: relative;
+			perspective: 800px;
+			transform-style: preserve-3d;
+		}
+		.box div{
+			width: 130px;
+			transform-style: preserve-3d;
+			height: 280px;
+			background: url(./imgs/6.jpg);
+			position: absolute;
+			transform-origin: left;
+			transition:.4s;
+		}
+		.box:hover .div2{
+			transform:rotateY(35deg);
+		}
+		.box:hover .div3{
+			transform:rotateY(-100deg);
+		}
+		.box:hover .div4{
+			transform:rotateY(100deg);
+		}
+		
+	</style>
+</head>
+<body>
+	
+
+	<div class='box'>
+
+		<div style="background-position:0 0;left:0;transform:rotateY(0)">
+			<div class='div2' style="background-position:-130px 0;left:130px;">
+				<div class='div3' style="background-position:-260px 0;left:130px;">
+					<div class='div4' style="background-position:-390px 0;left:130px;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=750, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>transform高级应用</title>
+	<style lang="">
+		*{margin: 0;padding: 0;}
+		.view{
+			
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+			width: 750px;
+			position: absolute;
+			height: 100%;  
+		}
+		.box-ui,.translateZ{
+      
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;			
+		}
+		.box-C{
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            width: 129px;
+            height: 1170px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin:-585px 0 0 -64.5px;
+
+            
+        }
+
+        .box-item{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+	</style>
+</head>
+<body>
+	<div class="view" id='view'>
+		<div class="box-ui" >
+			<div class="translateZ" >
+				<div class="box-C">
+	
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src='./js/util.js?t=5'></script>
+	<script>
+		((document)=>{
+			var bgImgs = [];
+			for (var i = 0; i < 20; i++) {
+				bgImgs.push({
+					img: './imgs/vr/' + (i + 1) + '.png',
+				})
+			}
+			var myUtil = {
+				bgImgs,
+				isStart:true,
+				startBoxDeg:0,
+				viewW: Math.min(window.innerWidth, 750),
+				viewH: window.innerHeight,
+				init(){
+					this.createElement();
+				},
+				createElement(){
+					var angle = 360 / this.bgImgs.length;
+					var Z = Math.tan(Math.PI / 180 * (180 - angle) / 2) * 129 / 2;
+
+					var html = '';
+					this.bgImgs.forEach((item, i) => {
+						item.style = [
+							'width:129px',
+							'height:1170px',
+							'background: url(' + item.img + ') no-repeat center center',
+							'background-size: cover',
+							'transform: rotateY(' + -angle * i + 'deg) translateZ(' + -Z + 'px)'
+						].join(';')
+						html+=`
+							<div class="box-item" style="${item.style}">
+
+							</div>
+						`
+					});
+
+					var boxC = document.querySelector('.box-C');
+					boxC.innerHTML = html;
+					this.boxC = boxC;
+
+					var perspective = Math.tan(Math.PI / 180 * 52) * this.viewH / 2 * 2;
+					var view = document.querySelector('#view');
+					view.style.perspective = perspective + 'px';
+					this.view = view;
+					var boxui = document.querySelector('.box-ui')
+					util.css(boxui, "translateZ", perspective);
+
+					var toZ = document.querySelector('.translateZ')
+					util.css(toZ, "translateZ", -4500);
+					this.toZ = toZ;
+					setTimeout(() => {
+
+						util.xTween({
+							el: boxC,
+							attrs: {
+								'rotateY': 1080
+							},
+							duration: 5000,
+							cb: () => {
+								this.rotateStop = true;
+								this.bindEvent();
+
+							}
+						});
+
+						util.xTween({
+							el: toZ,
+							attrs: {
+								translateZ: -1500
+							},
+							duration: 2000,
+							fx: 'easeIn'
+
+						})
+					}, 210)
+				},
+				bindEvent(){
+					var view = document.querySelector('.view')
+					view.addEventListener('touchstart',e=>{
+						this.isTouch = true;
+						if (!this.isTouch) {
+							return;
+						}
+						if (!this.rotateStop) {
+							return;
+						}
+						this.startRotateY = util.css(this.boxC, 'rotateY');
+						this.startX = e.changedTouches[0].pageX;
+						this.isStarting = true;
+
+						this.lastPoint = this.startX;
+						this.lastTime = Date.now();
+						this.lastSpeed = 0;
+						util.xTween.stop(this['toZ']);
+						util.xTween({
+							el: this['toZ'],
+							attrs: {
+								translateZ: -1600
+							},
+							duration: 100,
+							fx: 'easeIn'
+						})
+					});
+					view.addEventListener('touchmove',e=>{
+						if (!this.rotateStop) {
+							return;
+						}
+						if (this.isStarting) {
+							var endX = e.changedTouches[0].pageX;
+							var angle = (endX - this.startX) / this.viewW * 120;
+							this.angle = angle;
+							util.css(this.boxC, 'rotateY', this.startRotateY - angle);
+
+							var nowTime = Date.now();
+							this.lastSpeed = (endX - this.lastPoint) / (nowTime - this.lastTime) * 300;
+
+							this.lastPoint = endX;
+							this.lastTime = nowTime;
+
+						}
+					});
+					view.addEventListener('touchend',e=>{
+						if (!this.isTouch) {
+							return;
+						}
+						util.xTween.stop(this['toZ']);
+						util.xTween({
+							el: this['toZ'],
+							attrs: {
+								translateZ: -1500
+							},
+							duration: 300,
+							fx: 'easeIn',
+
+						})
+						if (!this.rotateStop || this.lastSpeed === 0 || Date.now() - this.lastTime >= 40) {
+							setTimeout(() => {
+								this.isStart = false;
+							}, 330);
+							return;
+						}
+
+						this.isStarting = false;
+						var endX = e.changedTouches[0].pageX;
+
+						var dis = (this.lastSpeed) / this.viewW * 120;
+
+						util.xTween.stop(this['toZ']);
+						util.xTween({
+							el: this['toZ'],
+							attrs: {
+								translateZ: -1500
+							},
+							duration: 300,
+							fx: 'easeIn'
+						})
+
+						util.xTween.stop(this['boxC']);
+						util.xTween({
+							el: this['boxC'],
+							attrs: {
+								rotateY: util.css(this['boxC'], 'rotateY') - dis
+							},
+							duration: {
+								multiple: 3,
+								min: 200,
+								max: 1500
+							},
+							fx: 'easeOutStrong',
+							cb: () => {
+								this.isTouch = false;
+								this.isStart = true;
+							}
+
+
+						})
+					})
+
+					window.addEventListener('deviceorientation', (e) => {
+						if (this.isTouch) {
+							return;
+						}
+						var box = this['boxC'];
+
+						if (this.isStart) {
+							var deg = (e.alpha + e.gamma) % 360;
+							this.isStart = false;
+							this.startDeg = deg;
+
+							this.startBoxDeg = util.css(box, 'rotateY');
+
+						} else {
+							var nowDeg = (e.alpha + e.gamma) % 360;
+							var disDeg = nowDeg - this.startDeg;
+
+							console.log(this.startBoxDeg)
+
+							util.css(box, 'rotateY', disDeg + this.startBoxDeg);
+						}
+					});
+				}
+			}
+
+			myUtil.init();
+
+		})(document)
+	</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3D折纸函数的封装</title>
+	<style lang="">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.box,.box1{
+			margin: 20px auto 0;
+		}
+	</style>
+</head>
+<body>
+	<div class='box'>
+	</div>
+	<div class='box1'>
+	</div>
+	<script>
+		((document)=>{
+			class Origami{
+				constructor(options ){
+					this.el = null;
+					this.imgUrl = null;//图片的地址
+					this.size = 4;//要拆成几部分
+					Object.assign(this, options);//将实例化的参数覆盖默认参数
+					this.layout();
+				}
+				layout(){
+					let {el,imgUrl,size} = this;
+					var html = '';
+					var img = new Image();
+					var style = document.createElement('style');
+					document.head.appendChild(style);
+					img.onload = function(){
+						var {width,height} = this;
+						if (typeof el === 'string') {
+							var elObj = document.querySelector(el);
+						}else if (typeof el === 'object'){
+							var elObj = el;
+						}
+						var cssText = `
+							${"."+elObj.className}{
+								width:${width}px;
+								height:${height}px;
+								position: relative;
+								perspective: 800px;
+								transform-style: preserve-3d;
+							}
+							${"." + elObj.className} div{
+								width: ${width/size}px;
+								transform-style: preserve-3d;
+								height: ${height}px;
+								background: url(${imgUrl});
+								position: absolute;
+								transform-origin: left;
+								transition: .4s;
+							}`;
+						style.innerHTML = cssText;
+						var oneSize = width / size;
+						
+						for(var i = 0;i < size; i++){
+							html = `<div class='div_origami' style="
+								left:${i===size-1?0:oneSize}px;height:${height}px;
+								background-position:${-oneSize*(size-i-1)}px 0"
+							>${html}</div>`;
+						}
+						elObj.innerHTML = html;
+
+						var items =[...elObj.querySelectorAll('.div_origami')];
+						elObj.addEventListener('mouseover',e=>{
+							items.forEach((item,i)=>{
+								if(i>0){
+									if(i===1){
+										item.style.transform = 'rotateY(45deg)'
+										
+									}else{
+										item.style.transform = 'rotateY('+ (i % 2 === 0 ? -1 : 1) *90+'deg)'
+									}
+								}
+							})
+						});
+						elObj.addEventListener('mouseout',e=>{
+							items.forEach((item, i) => {
+								if (i > 0) {
+									item.style.transform = 'rotateY(0)'
+								}
+							})
+						})	
+					}
+					img.src =imgUrl;
+				}
+			}
+
+			new Origami({
+				el:'.box',
+				imgUrl:'./imgs/6.jpg',
+				size:10
+			});
+
+			new Origami({
+				el: '.box1',
+				imgUrl: './imgs/8.jpg',
+				size: 5
+			});
+
+		})(document);
+	</script>
+
+
+</body>
+
+</html>

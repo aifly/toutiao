@@ -7,6 +7,9 @@
 	<title>3D折纸基础布局</title>
 	<style lang="">
 		*{margin: 0;padding:0;}
+		body{
+			background: #000;
+		}
 		.box{
 			width: 520px;
 			height: 280px;
@@ -25,13 +28,15 @@
 			transition:.4s;
 		}
 		.box:hover .div2{
-			transform:rotateY(35deg);
+			transform:rotateY(45deg);
 		}
+
 		.box:hover .div3{
-			transform:rotateY(-100deg);
+			transform:rotateY(-90deg);
 		}
+		
 		.box:hover .div4{
-			transform:rotateY(100deg);
+			transform:rotateY(90deg);
 		}
 		
 	</style>
@@ -41,7 +46,7 @@
 
 	<div class='box'>
 
-		<div style="background-position:0 0;left:0;transform:rotateY(0)">
+		<div style="background-position:0 0;left:0;">
 			<div class='div2' style="background-position:-130px 0;left:130px;">
 				<div class='div3' style="background-position:-260px 0;left:130px;">
 					<div class='div4' style="background-position:-390px 0;left:130px;">

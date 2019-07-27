@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>球</title>
+
+	<style>
+		*{margin: 0;padding: 0;}
+		body{
+			transform-style: preserve-3d;
+			perspective: 1200px;
+		}
+		.box{
+			width: 500px;
+			height: 500px;
+			margin: 100px auto;
+			transform-style: preserve-3d;
+			position: relative;
+		}
+		.box div{
+			position: absolute;
+			width: 20px;
+			height: 20px;
+
+		}
+
+		.box div.div{
+			width: 200px;
+			height: 200px;
+			background: red;
+			border-radius: 50%;
+			transform: rotateX(70deg);
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div class="box">
+		
+	</div>
+
+	<script>
+		((document)=>{
+
+			var util = {
+				init(){
+					this.layout()
+				},
+				layout(){
+					var box = document.querySelector('.box');
+					/*for(var i = 0 ; i < 200 ; i++){
+						var div = document.createElement('div');
+						div.innerHTML = '圆';
+						div.style.left = '240px';
+						div.style.top = '240px';
+						var x = Math.PI*2 * Math.random();
+						var y = Math.PI*2 * Math.random();
+						div.style.transform = 'rotateX('+x+'rad) rotateY('+y+'rad) translateZ(-300px)'
+						box.appendChild(div);
+					}*/
+
+					for(var k = 0 ; k < 4 ; k++){
+						var div = document.createElement('div');
+						div.className = 'div';
+						div.style.left = '50%';
+						var t =  40;
+						var R =400;
+						var i = k;
+						div.style.top = R / 5 * i + t +'px';
+						div.style.width = R / 5 * i + t + 'px';
+						div.style.height = R / 5 * i + t + 'px';
+						div.style.marginLeft = - (R / 5 * i + t) / 2 + 'px';
+						var x = Math.PI*2 * Math.random();
+						var y = Math.PI*2 * Math.random();
+						///div.style.transform = 'rotateX('+x+'rad) rotateY('+y+'rad) translateZ(-300px)'
+						box.appendChild(div);
+					}
+					var angle = 0;
+					setInterval(()=>{
+						//angle+=70;
+						box.style.transform = 'rotateY('+(Math.PI/180*angle)+'deg)'
+					},20)
+				}
+
+			}
+
+			util.init();
+
+		})(document);
+	</script>
+</body>
+</html>

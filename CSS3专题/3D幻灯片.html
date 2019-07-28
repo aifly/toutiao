@@ -12,17 +12,17 @@
 		}
 		.box{
 			width: 800px;
-			height: 346px;
+			height: 448px;
 			transform-style: preserve-3d;
-			transform: translateZ(-173px);
-			margin: 100px auto 0;
+			transform: translateZ(-224px);
+			margin: 40px auto 0;
 			position: relative;
 
 		}
 
 		.item{
 			transform-style: preserve-3d;
-			height: 346px;
+			height: 448px;
 			position: absolute;
 			transition: .5s;
 
@@ -39,40 +39,40 @@
 
 		.item a:nth-of-type(1){
 			background: url(./imgs/slider/1.jpg) no-repeat;
-			transform: rotateX(0) translateZ(173px);
+			transform: rotateX(0) translateZ(224px);
 		}
 		.item a:nth-of-type(2){
 			background: url(./imgs/slider/2.jpg) no-repeat;
-			transform: rotateX(90deg) translateZ(173px);
+			transform: rotateX(90deg) translateZ(224px);
 		}
 		.item a:nth-of-type(3){
 			background: url(./imgs/slider/3.jpg) no-repeat;
-			transform: rotateX(180deg) translateZ(173px);
+			transform: rotateX(180deg) translateZ(224px);
 		}
 		.item a:nth-of-type(4){
 			background: url(./imgs/slider/4.jpg) no-repeat;
-			transform: rotateX(270deg) translateZ(173px);
+			transform: rotateX(270deg) translateZ(224px);
 		}
 		.item span:nth-of-type(1){
 			position: absolute;
 			background: #eee;
-			width: 346px;
-			height: 346px;
+			width: 448px;
+			height: 448px;
 			left: 0;
 			top: 0;
 			transform-origin: left;;
-			transform:translateZ(173px) rotateY(90deg)
+			transform:translateZ(224px) rotateY(90deg)
 
 		}
 		.item span:nth-of-type(2){
 			position: absolute;
 			background: #eee;
-			width: 346px;
-			height: 346px;
+			width: 448px;
+			height: 448px;
 			right: 0;
 			top: 0;
 			transform-origin: right;
-			transform: translateZ(173px)  rotateY(-90deg)
+			transform: translateZ(224px)  rotateY(-90deg)
 		}
 
 		.item:last-of-type span:nth-of-type(2){
@@ -110,14 +110,11 @@
 				height:346,
 				layout(){
 					var {size,width,height } = this;
-
-					var box = document.querySelector('.box');
-
 					this.createStyle();
 
-
+					var box = document.querySelector('.box');
 					var html = ''
-
+					//size表示我们要分割的份数
 					for(var i = 0 ; i < size ; i++){
 						html += `
 							<div class='item item${i+1}'>
@@ -140,17 +137,14 @@
 								width:${width/size}px;
 							}
 							`;
-
-
 					for(var i = 0 ; i < size ;i++){
 						var pos = width / size * i + 'px';
 						cssText += `
-							
 							.item${i+1}{
 								left: ${pos};
 								z-index:${i}
 							}
-
+							
 							.item${i+1}.next{
 								transition-delay:${i*70}ms;
 							}
@@ -160,35 +154,31 @@
 
 							.item${i+1} a:nth-of-type(1){
 								background-position: -${pos} 0;
-								transform: rotateX(0) translateZ(173px);
+								transform: rotateX(0) translateZ(224px);
 							}
 							.item${i+1} a:nth-of-type(2){
 								background-position: -${pos} 0;
-								transform: rotateX(90deg) translateZ(173px);
+								transform: rotateX(90deg) translateZ(224px);
 							}
 							.item${i+1} a:nth-of-type(3){
 								background-position: -${pos} 0;
-								transform: rotateX(180deg) translateZ(173px);
+								transform: rotateX(180deg) translateZ(224px);
 							}
 							.item${i+1} a:nth-of-type(4){
 								background-position: -${pos} 0;
-								transform: rotateX(270deg) translateZ(173px);
-							}
-
-						`
+								transform: rotateX(270deg) translateZ(224px);
+							}`
 					}
-
 					style.innerHTML = cssText;
 					document.head.appendChild(style);
 				},
 				bindEvent(){
 					var btnPrev = document.querySelector('#prev');
 					var btnNext = document.querySelector('#next');
-					var i = 0;
+					var iNow = 0;
 					var items  = [...document.querySelectorAll(".item")];
 					btnPrev.onclick = function(){
-						i--;
-
+						iNow--;
 						items.forEach((item)=>{
 							item.classList.add('prev');
 							item.classList.remove('next');
@@ -196,7 +186,7 @@
 						});
 					}
 					btnNext.onclick = function(){
-						i++;
+						iNow++;
 						items.forEach((item)=>{
 							item.classList.remove('prev');
 							item.classList.add('next');

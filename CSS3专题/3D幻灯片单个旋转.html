@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>3D幻灯片</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0
+		}
+
+		.box {
+			width: 800px;
+			height: 448px;
+			transform-style: preserve-3d;
+			perspective: 1200px;
+			margin: 140px auto;
+			position: relative;
+		}
+
+		.item {
+			transform-style: preserve-3d;
+			width: 40px;
+			height: 448px;
+			position: absolute;
+
+		}
+
+		.item a {
+			width: 100%;
+			height: 100%;
+			display: block;
+			position: absolute;
+
+		}
+
+		.item a:nth-of-type(1) {
+			background: url(./imgs/slider/1.jpg) no-repeat;
+			transform: rotateX(0) translateZ(224px);
+		}
+
+		.item a:nth-of-type(2) {
+			background: url(./imgs/slider/2.jpg) no-repeat;
+			transform: rotateX(90deg) translateZ(224px);
+		}
+
+		.item a:nth-of-type(3) {
+			background: url(./imgs/slider/3.jpg) no-repeat;
+			transform: rotateX(180deg) translateZ(224px);
+		}
+
+		.item a:nth-of-type(4) {
+			background: url(./imgs/slider/4.jpg) no-repeat;
+			transform: rotateX(270deg) translateZ(224px);
+		}
+
+		.item span:nth-of-type(1) {
+			position: absolute;
+			background: #ccc;
+			width: 448px;
+			height: 448px;
+			left: 0;
+			top: 0;
+			transform-origin: left;
+			;
+			transform: translateZ(224px) rotateY(90deg)
+		}
+
+		.item span:nth-of-type(2) {
+			position: absolute;
+			background: #ccc;
+			width: 448px;
+			height: 448px;
+			right: 0;
+			top: 0;
+			transform-origin: right;
+			transform: translateZ(224px) rotateY(-90deg)
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class='box'>
+		<div class='item'>
+			<a href=""></a>
+			<a href=""></a>
+			<a href=""></a>
+			<a href=""></a>
+			<span></span>
+			<span></span>
+		</div>
+	
+
+	</div>
+
+	<script>
+		((document)=>{
+			var item = document.querySelector('.item');
+			var angle = 0;
+			setInterval(()=>{
+				angle+=2;
+				item.style.transform = 'rotateX('+angle+'deg)';
+			},20)
+		})(document)
+	</script>
+</body>
+
+</html>

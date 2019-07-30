@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3D幻灯片1</title>
+
+	<style lang="">
+		*{margin: 0;padding: 0}
+		body{
+			overflow: hidden;
+		}
+		img{
+			vertical-align: top;
+		}
+		.box{
+			width: 400px;
+			height: 266px;
+
+			margin:40px auto;
+			position: relative;
+			perspective: 800px;
+			transform-style: preserve-3d;
+		}
+		.item{
+			position: absolute;
+			width: 100%;
+			height:100%;
+			left:0;
+			top:0;
+			color:#fff;
+			font-size:200px;
+			font-family: Georgia;
+			line-height: 400px;
+			text-align: center;
+			transform-origin: bottom;
+			z-index: 6;
+		
+			opacity:0;
+
+
+			/**/
+
+			-webkit-box-reflect:below 0 
+			-webkit-gradient(linear, left top, left bottom, from(transparent),
+			 to(rgba(250, 250, 250, 0.3)));;
+			
+		}
+	
+		.item:nth-of-type(2){
+			z-index: 5;
+		}
+		.item:nth-of-type(3){
+			z-index: 4;
+		}
+		.item:nth-of-type(4){
+			z-index: 3;
+		}
+		.item:nth-of-type(5){
+			z-index: 2;
+		}
+		.item:nth-of-type(6){
+			z-index: 1;
+		}
+
+		#btns{
+			width: 400px;
+			height: 40px;
+			margin:30px auto;
+			text-align:center;
+			position: relative;
+			z-index: 12;
+		}
+		#btns span{
+			color:blue;
+			margin: 0 10px;
+			cursor: pointer;
+		}
+
+		@keyframes show{
+			0%{
+				transform: rotateX(180deg);
+				opacity:0;
+			}
+			80%{
+				transform: rotateX(-4deg);
+				opacity:1;
+			}
+			85%{
+				transform: rotateX(3deg);
+				opacity:1;
+			}
+			90%{
+				transform: rotateX(-2deg);
+				opacity:1;
+			}
+			95%{
+				transform: rotateX(1deg);
+				opacity:1;
+			}
+			100%{
+				transform: rotateX(0deg);
+				opacity:1;
+			}
+		}
+
+		@keyframes hide{
+			0%{
+				transform: rotateX(0deg);
+				opacity:1;
+			}
+			60%,100%{
+				transform: rotateX(-180deg);
+				opacity:0;
+			}
+		}
+
+	</style>
+</head>
+<body>
+	<div class='box'>
+		<div class="item">
+			<img src='./imgs/reflect/1.jpg'/>	
+		</div>
+		<div class="item">
+			<img src='./imgs/reflect/2.jpg'/>	
+		</div>
+		<div class="item">
+			<img src='./imgs/reflect/3.jpg'/>	
+		</div>
+		<div class="item">
+			<img src='./imgs/reflect/4.jpg'/>	
+		</div>
+		<div class="item">
+			<img src='./imgs/reflect/5.jpg'/>	
+		</div>
+		<div class="item">
+			<img src='./imgs/reflect/6.jpg'/>	
+		</div>
+	</div>
+
+
+	<div id="btns">
+		<span>prev</span>
+		<span>next</span>
+	</div>
+
+	<script>
+		((document)=>{
+
+			var util = {
+				init(){
+
+					var items = document.querySelectorAll('.item');
+					var iNow = 0 ;
+					items[iNow].style.opacity = 1;
+					var spans = document.querySelectorAll('#btns span');
+					spans[0].onclick = e =>{
+						items[iNow].style.animation = 'hide linear .5s forwards'
+						iNow--;
+						if(iNow<0){
+							iNow = items.length-1;
+						}
+						items[iNow].style.animation = 'show  linear .5s forwards';
+						
+					}
+					spans[1].onclick = e => {
+						items[iNow].style.animation = 'hide linear .5s forwards'
+						
+						iNow++;
+						iNow%=items.length;
+						items[iNow].style.animation = 'show  linear .5s forwards';
+						
+						
+					}
+				},
+				
+			}
+			util.init();
+
+		})(document);
+	</script>
+</body>
+</html>

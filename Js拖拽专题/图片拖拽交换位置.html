@@ -106,7 +106,6 @@
 				drag(obj,index){
 					obj.index = index;
 
-
 					obj.onmousedown = e =>{
 
 						lis.forEach(li=>{
@@ -124,7 +123,7 @@
 						document.onmousemove = e=>{
 							var x  = e.pageX - disX;
 							var y = e.pageY - disY;
-							
+
 							lis.forEach(li=>{
 								if(li !== obj){
 									li.dis = Math.sqrt((li.offsetLeft - obj.offsetLeft)**2+(li.offsetTop - obj.offsetTop)**2);
@@ -152,12 +151,19 @@
 							document.onmouseup = document.onmousemove = null;
 
 							lis.forEach((li,i)=>{
+
 								if(li === target && this.hitTest(obj,li) ){
+
+
+									//将两者的位置按照索引的互换来取对应的位置值。
 									li.style.left = this.position[obj.index].x + 'px';
 									li.style.top = this.position[obj.index].y + 'px';
+
 									obj.style.left = this.position[ target.index].x + 'px';
 									obj.style.top = this.position[ target.index].y + 'px';
 
+
+									//交换索引
 									var index=  obj.index;
 									obj.index = target.index;
 									li.index = index;

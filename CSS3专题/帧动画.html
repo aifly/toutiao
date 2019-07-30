@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>帧动画</title>
+
+	<style>
+		div{
+			width: 100px;
+			height: 100px;
+
+			animation: rotate 1s linear forwards;
+			background: red;
+		}
+
+		@keyframes rotate{
+			0%{
+				transform: rotate(0)
+			}
+			100%{
+				transform:translateX(100px) rotate(280deg) ;
+
+			}
+		}
+	</style>
+</head>
+<body>
+	<div>
+		
+	</div>
+</body>
+</html>

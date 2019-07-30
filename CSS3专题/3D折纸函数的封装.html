@@ -76,7 +76,7 @@
 						var items =[...elObj.querySelectorAll('.div_origami')];
 						elObj.addEventListener('mouseover',e=>{
 							items.forEach((item,i)=>{
-								if(i>0){
+								if(i>0){//第一张图片不需要旋转。所以不处理。
 									if(i===1){
 										item.style.transform = 'rotateY(45deg)'
 										
@@ -98,6 +98,7 @@
 				}
 			}
 
+
 			new Origami({
 				el:'.box',
 				imgUrl:'./imgs/6.jpg',
@@ -109,6 +110,7 @@
 				imgUrl: './imgs/8.jpg',
 				size: 5
 			});
+
 
 		})(document);
 	</script>

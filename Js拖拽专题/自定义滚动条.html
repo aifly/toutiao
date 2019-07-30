@@ -80,24 +80,28 @@
 			var util = {
 
 				init(){
+
 					var container = document.querySelector('#container');
+
 					var ul = container.querySelector('ul');
-					var ulH = ul.offsetHeight;
-					var containerH = container.offsetHeight;
+					
+					var ulH = ul.offsetHeight;//要滚动的内容区域的高度
+					var containerH = container.offsetHeight;//父容器的高度
 					var scrollbar = document.querySelector('#scrollbar');
-					var scrollBarH = scrollbar.offsetHeight;
+					var scrollBarH = scrollbar.offsetHeight;//滚动条的高度
 
 					scrollbar.onmousedown = e =>{
 						var disY = e.pageY -	scrollbar.offsetTop;
 						e.preventDefault();
 						document.onmousemove = e=>{
-
 							var y = e.pageY - disY;
-							y <=0 && (y = 0);
+							y <=0 && (y = 0);//顶端的临界条件判断
+							//底部的临界点的条件判断
 							y + scrollBarH > containerH && ( y =  containerH - scrollBarH);
 							scrollbar.style.top = y +  'px';
-							var k = y / ( containerH - scrollBarH);
 
+							var k = y / ( containerH - scrollBarH);//一元一次方程的K系数
+							//将这个比例系数作用在内容滚动区域的属性上。
 							ul.style.transform = 'translateY('+-k*(ulH-containerH)+'px)'
 						}
 						document.onmouseup = e=>{

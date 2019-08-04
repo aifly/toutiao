@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>扇形导航基础布局</title>
+<style>
+html{height:100%;overflow:hidden;}
+body{ background:#000;}
+
+	#menu{
+		width:50px;
+		height:50px;
+		position:fixed;
+		right:20px; 
+		bottom:20px;
+	 }
+	#menu_list{
+		height:42px;
+		width:42px; 
+		position:relative;
+		margin:4px;
+	}
+	#menu_list img{ 
+		border-radius:21px;
+		position:absolute;
+		left:0;top:0;
+		border-radius:21px;
+	}
+	#home{
+		width:50px;height:50px;
+		background:url(./imgs/nav/home.png) no-repeat; 
+		border-radius:25px; 
+		position:absolute; 
+		left:0;top:0;
+		transition:.3s;
+	}
+
+
+	#btn{
+		width: 100px;
+		height: 32px;
+		line-height: 32px;
+
+	}
+
+</style>
+<script>
+window.onload=function()
+{
+	var oBtn=document.getElementById("home");
+
+
+	var aMenus=document.getElementById("menu_list").getElementsByTagName("img");
+	
+	var R = 150;//圆的半径
+
+	var oneAngle = 90 / (aMenus.length-1);//每一次旋转的角度
+
+	
+	for(var i=0;i<aMenus.length;i++){
+
+		aMenus[i].left = - Math.cos(oneAngle*i/180*Math.PI) * R;
+		aMenus[i].top = - Math.sin(oneAngle*i/180*Math.PI) * R;
+		  
+	}
+
+
+	oBtn.onclick=function(){
+		if(this.off){
+			this.style.transform = 'rotate(360deg)';
+		}
+		else{
+			this.style.transform = 'rotate(0deg)';
+		}
+
+		for(var i=0;i<aMenus.length;i++){
+
+
+			if(this.off){
+				aMenus[i].style.left = 0 +'px';
+				aMenus[i].style.top = 0 +'px';
+				aMenus[i].style.transform = 'rotate(0deg)';
+				aMenus[i].style.transition = 'left .2s '+ ((aMenus.length-i)*100)+'ms ,top .2s '+((aMenus.length-i)*100)+'ms,transform .3s -.1s';
+			}
+			else{
+				aMenus[i].style.left = aMenus[i].left+'px';
+				aMenus[i].style.top = aMenus[i].top+'px';
+				aMenus[i].style.transform = 'rotate(360deg)';
+				aMenus[i].style.transition = 'left .2s '+ (i*100)+'ms ,top .2s '+(i*100)+'ms,transform .3s .1s';
+				aMenus[i].style.transitionTimingFunction = 'cubic-bezier(0.35, 0.79, 0.99, 1.32)';
+			}
+			
+		}
+		
+		this.off=!this.off;
+	};
+
+};
+</script>
+</head>
+<body>
+<button id='btn'>点击</button>
+<div id="menu">
+	<div id="menu_list">
+    	<img src="./imgs/nav/prev.png" alt=""/>
+        <img src="./imgs/nav/open.png" alt="" />
+        <img src="./imgs/nav/close.png" alt="" />
+        <img src="./imgs/nav/full.png" alt="" />
+        <img src="./imgs/nav/refresh.png" alt="" />
+    </div>
+	<div id="home"></div>
+</div>
+
+
+</body>
+</html>

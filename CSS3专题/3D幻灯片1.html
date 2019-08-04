@@ -14,6 +14,7 @@
 		img{
 			vertical-align: top;
 		}
+
 		.box{
 			width: 400px;
 			height: 266px;
@@ -155,7 +156,11 @@
 					var items = document.querySelectorAll('.item');
 					var iNow = 0 ;
 					items[iNow].style.opacity = 1;
+					
+
 					var spans = document.querySelectorAll('#btns span');
+
+					//上一张
 					spans[0].onclick = e =>{
 						items[iNow].style.animation = 'hide linear .5s forwards'
 						iNow--;
@@ -165,7 +170,9 @@
 						items[iNow].style.animation = 'show  linear .5s forwards';
 						
 					}
+					//下一张，
 					spans[1].onclick = e => {
+
 						items[iNow].style.animation = 'hide linear .5s forwards'
 						
 						iNow++;

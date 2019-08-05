@@ -32,30 +32,43 @@
 	</div>
 
 	<div class="btns">
-		<button>添加</button>
-		<button>删除</button>
+		<button>push</button>
+		<button>pop</button>
 	</div>
 
 	<script>
 		((document)=>{
 
-			var arr = [1,2,3,4];
+			var arr = [1];
 
 			var box = document.querySelector('#box');
 			
-			for(var i = 0 ; i < arr.length ;i++){
-				var div = document.createElement('div');
-				div.className = 'item';
-				div.innerHTML = i;
-				box.appendChild(div);
-			}
-
 			
 
-			var btns = document.querySelector('#btns button');
-			btns[0].onclick = function(){
-				arr.push('new');
+			function render(){
+				box.innerHTML = '';
+				for(var i = 0 ; i < arr.length ;i++){
+					var div = document.createElement('div');
+					div.className = 'item';
+					div.innerHTML = arr[i];
 
+					box.appendChild(div);
+				}
+			}
+
+			render();
+
+
+
+			var btns = document.querySelectorAll('.btns button');
+			btns[0].onclick = function(){
+				arr.push(arr.length+1);
+				render();
+			};
+
+			btns[1].onclick = function(){
+				arr.pop();
+				render();
 			};
 
 

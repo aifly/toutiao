@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS数组这样学</title>
+	<style>
+		#box{
+			display: flex;
+		}
+		.item{
+			width: 100px;
+			height: 100px;
+			background: red;
+			margin: 4px ;
+			text-align: center;
+			line-height: 100px;
+			font-size: 30px;
+			color:#fff;
+		}
+		.btns{
+			margin: 100px;
+		}
+		button{
+			margin: 0 10px;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="box">
+		
+	</div>
+
+	<div class="btns">
+		<button>添加</button>
+		<button>删除</button>
+	</div>
+
+	<script>
+		((document)=>{
+
+			var arr = [1,2,3,4];
+
+			var box = document.querySelector('#box');
+			
+			for(var i = 0 ; i < arr.length ;i++){
+				var div = document.createElement('div');
+				div.className = 'item';
+				div.innerHTML = i;
+				box.appendChild(div);
+			}
+
+			
+
+			var btns = document.querySelector('#btns button');
+			btns[0].onclick = function(){
+				arr.push('new');
+
+			};
+
+
+		})(document)
+	</script>
+
+
+</body>
+</html>

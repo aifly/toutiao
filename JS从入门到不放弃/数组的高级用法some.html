@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS数组这样学</title>
+	<style>
+		#box{
+			display: flex;
+		}
+		.item{
+			width: 60px;
+			height: 60px;
+			background: red;
+			margin: 4px ;
+			text-align: center;
+			line-height: 60px;
+			font-size: 30px;
+			color:#fff;
+			cursor: pointer;;
+		}
+		.btns{
+			margin: 40px;
+		}
+		button{
+			margin: 0 10px;
+			padding: 8px 20px;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="box">
+
+		感兴趣的编程语言：
+		<input type="checkbox">JS
+		<input type="checkbox">PHP
+		<input type="checkbox">Java
+		<input type="checkbox">Python
+
+	</div>
+
+	<div>
+		<input type="checkbox" id='selectAll'>全选
+	</div>
+
+	<div class="btns">
+		<button>提交</button>
+	</div>
+
+	<script>
+		((document)=>{
+
+			
+			var box = document.querySelector('#box');
+
+
+
+			var checkboxs = [...box.querySelectorAll('input')];
+
+			var btns = document.querySelectorAll('.btns button');
+
+			btns[0].onclick = function(){
+
+				var res = checkboxs.some(checkbox=>{
+					return checkbox.checked;
+				})
+
+				if(res){
+					console.log('成功')
+				}else{
+					console.log('请选择一个爱好')
+				}
+				
+			};
+
+			checkboxs.forEach((item)=>{
+				item.onchange = function(){
+					var res =checkboxs.every(checkbox=>{
+						return checkbox.checked;
+					});
+
+					document.querySelector('#selectAll').checked = res;
+						
+				}
+			})
+
+
+			
+
+
+
+		})(document)
+	</script>
+
+
+</body>
+</html>

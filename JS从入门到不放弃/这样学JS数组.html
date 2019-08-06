@@ -8,20 +8,22 @@
 			display: flex;
 		}
 		.item{
-			width: 100px;
-			height: 100px;
+			width: 40px;
+			height: 40px;
 			background: red;
 			margin: 4px ;
 			text-align: center;
-			line-height: 100px;
+			line-height: 40px;
 			font-size: 30px;
 			color:#fff;
+			cursor: pointer;;
 		}
 		.btns{
-			margin: 100px;
+			margin: 40px;
 		}
 		button{
 			margin: 0 10px;
+			padding: 8px 20px;
 		}
 	</style>
 </head>
@@ -42,23 +44,30 @@
 			var arr = [1];
 
 			var box = document.querySelector('#box');
-			
-			
-
+			var items;
 			function render(){
 				box.innerHTML = '';
 				for(var i = 0 ; i < arr.length ;i++){
 					var div = document.createElement('div');
 					div.className = 'item';
+					div.title = '点击删除';
 					div.innerHTML = arr[i];
-
 					box.appendChild(div);
 				}
-			}
-
+				items =box.querySelectorAll('.item');
+			};
 			render();
 
-
+			box.onclick = function(e){
+				if(e.target.className === 'item'){
+					items.forEach((item,i)=>{
+						if(item === e.target){
+							arr.splice(i,1);
+							render();
+						}
+					})					
+				}
+			};
 
 			var btns = document.querySelectorAll('.btns button');
 			btns[0].onclick = function(){

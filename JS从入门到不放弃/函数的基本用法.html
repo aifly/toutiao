@@ -9,12 +9,22 @@
 	<pre>
 
 
-	function render(arg){
-		console.log(arg);
+	var isWeiXin = function() {
+		var ua = window.navigator.userAgent.toLowerCase();
+
+		if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+		
+			return true;
+		
+		} else {
+		
+			return false;
+		
+		}
 	}
 
-	render('hello,world');
-	render('hello,javascript');
+	console.log( isWeiXin() );
+
 	</pre>
 	<script>
 		
@@ -22,12 +32,33 @@
 		(function(){
 
 
-			function render(arg){
+			
+
+			var isWeiXin = function() {
+				var ua = window.navigator.userAgent.toLowerCase();
+				if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			console.log(isWeiXin());;
+
+			/*function add(a,b){
+
+				return a + b;
+
+			}*/
+
+			/*function render(arg){
 				console.log(arg);
 			}
 
 			render('hello,world');
-			render('hello,javascript');
+			render('hello,javascript');*/
+
+
 
 		})();
 

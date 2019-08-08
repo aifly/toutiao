@@ -53,28 +53,14 @@
 			
 			var box = document.querySelector('#box');
 
-
-
 			var checkboxs = [...box.querySelectorAll('input')];
 
 			var btns = document.querySelectorAll('.btns button');
 
-			btns[0].onclick = function(){
-
-				var res = checkboxs.some(checkbox=>{
-					return checkbox.checked;
-				})
-
-				if(res){
-					console.log('成功')
-				}else{
-					console.log('请选择一个爱好')
-				}
-				
-			};
-
 			checkboxs.forEach((item)=>{
+
 				item.onchange = function(){
+				
 					var res =checkboxs.every(checkbox=>{
 						return checkbox.checked;
 					});

@@ -44,6 +44,7 @@
 			var arr = [1];
 
 			var box = document.querySelector('#box');
+			
 			var items;
 			function render(){
 				box.innerHTML = '';
@@ -56,14 +57,19 @@
 				}
 				items =box.querySelectorAll('.item');
 			};
+
 			render();
 
 			box.onclick = function(e){
+
 				if(e.target.className === 'item'){
+				
 					items.forEach((item,i)=>{
+				
 						if(item === e.target){
 							arr.splice(i,1);
 							render();
+				
 						}
 					})					
 				}

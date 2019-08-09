@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS数组快速排序</title>
+	<style>
+		
+		button{
+			margin: 20px;
+		}
+	</style>
+</head>
+<body>
+
+	<div>
+		排序前：1 , 4 , 2 , 5 , 21 , 3 , 44 , 12
+	</div>
+
+	<button onclick="sort()">排序</button>
+	<div id='res'></div>
+
+	<script>
+
+
+		function sort(){
+
+			var arr = [1,4,2,5,21,3,44,12];//要排序的数组。
+			
+			var res = [];//要返回的排序后的数组。
+
+			var arr1 = [];//中间用到的过渡数组
+			
+			arr.forEach(a=>{
+
+				arr1[a] = 1;
+
+			});
+
+
+
+			arr1.forEach((r,index)=>{
+				
+				if(r === 1){
+				
+					res.push(index);//
+				
+				}	
+			})
+			document.querySelector('#res').innerHTML = '排序后：'+res.join(' , ')
+		}
+
+	</script>
+</body>
+</html>

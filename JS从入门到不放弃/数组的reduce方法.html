@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组的reduce方法</title>
+</head>
+<body>
+
+	<pre>
+		var arr = [1,2,3,4];
+
+		var res = arr.reduce((sum,next,index,arr)=>{
+
+			return sum + next;
+
+		} , 10)
+
+		console.log(res);
+	</pre>
+	<script>
+		
+
+		var arr = [1,2,3,4];
+
+		var res = arr.reduce((sum,next,index,arr)=>{
+
+			return sum + next;
+
+		},10)
+
+		console.log(res);
+
+	</script>
+</body>
+</html>

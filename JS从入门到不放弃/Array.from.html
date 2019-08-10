@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Array.from</title>
+
+
+	<style>
+		#box{
+			width: 100%;
+
+		}
+		.item{
+			width: 50px;
+			height: 50px;
+			display: inline-block;
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id='box'>
+		<div class="item"></div>
+		<div class="item"></div>
+		<div class="item"></div>
+	</div>
+	<hr>
+	<button id="btn1">获取所有的小方块</button>
+	<div style="height: 20px;"></div>
+	<button id='btn2'>获取转成数组后所有的小方块</button>
+
+	<!-- <pre>
+		
+		var json = {
+			0:'html',
+			1:'css',
+			2:'javascript',
+			length:3
+		}
+	
+		var res = Array.from(json);
+		console.log(res);
+	
+	</pre> -->
+	<script>
+
+		var box = document.querySelector('#box');
+		var items = box.querySelectorAll('.item');
+		
+		var btn1 = document.querySelector('#btn1');
+		var btn2 = document.querySelector('#btn2');
+		btn1.onclick = function(){
+			console.log('items instanceof Array => ', items instanceof Array);		
+		}
+		btn2.onclick = function(){
+			console.log('Array.from(items) instanceof Array => ',Array.from(items) instanceof Array);
+		}
+		/*var json = {
+			0:'html',
+			1:'css',
+			2:'javascript',
+			length:3
+		}
+
+		var res = Array.from(json);
+		console.log(res);*/
+	</script>
+</body>
+</html>

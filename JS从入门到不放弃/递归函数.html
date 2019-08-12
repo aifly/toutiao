@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>函数的递归</title>
+</head>
+<body>
+	<pre>
+		//求阶乘
+		function multiply(num){
+
+			if(num === 1){
+				return 1;
+			}
+
+			var res = arguments.callee(num - 1) * num;
+
+			return res;
+		}
+		
+		console.log( multiply( 5 ) );
+	</pre>
+	 <script>
+		//求阶乘
+
+
+		function multiply(num){
+			if(num === 1){
+				return 1;
+			}
+			var res = arguments.callee(num - 1) * num;
+			return res;
+		}
+
+		console.log(multiply(5));
+
+	 </script>
+</body>
+</html>

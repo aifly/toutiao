@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>函数的递归</title>
+</head>
+
+<body>
+
+	<ul id='menu'></ul>
+	<script>
+
+		var menus =  [
+				{
+					name: '基础配置',
+					link: '/basicconfig'
+				},
+				{
+					name: '权限管理',
+					link: '/role',
+					children: [
+						{
+							name: '权限组管理',
+							link: '/rolegroup'
+						}, {
+							name: '权限分配',
+							link: '/setrole',
+							children:[
+								{
+									name:'我的权限',
+									link:'myrole'
+								},
+								{
+									name: '权限申请',
+									link: 'applyrole'
+								}
+							]
+						}
+					]
+				}
+			]
+
+
+			function renderMenu(menus){
+				var html = ``;
+				menus.forEach(menu => {
+
+					if(menu.children){
+						
+						if(menu.name){
+							html += `<li>${menu.name}</li>`
+						}
+						html += `<ul>${arguments.callee(menu.children)}</ul>`
+					}
+					else{
+						 html += `<li class='item'>${menu.name}</li>`
+					}
+				});
+				return html;
+			}
+
+			var html = renderMenu(menus);
+			document.querySelector('#menu').innerHTML = html;
+
+
+
+	</script>
+</body>
+
+</html>

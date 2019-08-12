@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>创建100个小球</title>
+	<style>
+		*{margin: 0;padding: 0;}
+
+		canvas{
+			background: #000;
+		}
+	</style>
+</head>
+<body>
+	
+	<canvas id='canvas' width="500" height="300"></canvas>
+	<script>
+		
+		function Ball(options){
+
+			this.color = 'red';
+		
+			this.size = 20;
+
+			this.x = 100;
+
+			this.y = 100;
+
+
+			Object.assign(this,options)
+
+			this.render = function(context){
+
+				context.beginPath();
+
+				context.arc(this.x,this.y,this.size,0,Math.PI*2,false);
+
+				context.fillStyle  = this.color;
+				context.fill();
+
+			}
+
+		}
+
+		
+
+
+
+	</script>
+</body>
+</html>

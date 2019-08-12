@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>面向对象</title>
+</head>
+<body>
+
+	<canvas id='canvas'></canvas>
+	<script>
+		
+		function Ball(){
+
+			this.color = 'red';
+		
+			this.size = 20;
+
+			this.x = 100;
+
+			this.y = 100;
+
+			this.render = function(context){
+
+				context.beginPath();
+
+				context.arc(this.x,this.y,this.size,0,Math.PI*2,false);
+
+				context.fillStyle  = this.color;
+				context.fill();
+
+			}
+
+		}
+
+
+
+	</script>
+</body>
+</html>

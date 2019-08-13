@@ -8,6 +8,30 @@
 </head>
 <body>
 
+	<pre>
+		
+		function Person(){
+			this.age = 18;
+			this.height = 180;
+			this.sex = '';
+		}
+		function F(){}
+
+		function Man(){
+			Person.call(this);
+		}
+		F.prototype =  Person.prototype;
+		
+		Man.prototype = new F();
+		
+		Man.prototype.constructor = Man;
+
+		var m = new Man();
+		console.log(m.__proto__ === Man.prototype);
+		console.log(m.__proto__.__proto__ === Person.prototype);
+		
+	</pre>
+
 	<canvas id='canvas'></canvas>
 	<script>
 		
@@ -33,6 +57,27 @@
 			}
 
 		}
+
+
+		function Person(){
+			this.age = 18;
+			this.height = 180;
+			this.sex = '';
+		}
+		function F(){}
+
+		function Man(){
+			Person.call(this);
+		}
+		F.prototype =  Person.prototype;
+		
+		Man.prototype = new F();
+		
+		Man.prototype.constructor = Man;
+
+		var m = new Man();
+		console.log( 'm.__proto__ === Man.prototype =>' ,m.__proto__ === Man.prototype);
+		console.log( 'm.__proto__.__proto__ === Person.prototype =>' ,m.__proto__.__proto__ === Person.prototype);
 
 
 

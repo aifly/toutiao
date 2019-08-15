@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Vue生命周期</title>
+</head>
+<body>
+	<div id="app">
+		<div>
+			
+		</div>
+	</div>
+	<script src='./js/vue.js'>
+	</script>
+
+	<script>
+		(function(Vue){
+			return;
+			new Vue({
+				el:'#app',
+				data:{
+					msg:'畅哥聊技术'
+				},
+				beforeCreate() {
+					//console.log(this)
+				},
+				created() {
+					console.log('created')
+				},
+				beforeMount() {
+					console.log('beforeMount')
+				},
+				mounted() {
+					console.log('mounted')
+				},
+			
+			});
+
+		})(Vue)
+	</script>
+</body>
+</html>

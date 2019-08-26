@@ -881,7 +881,8 @@
       while ( len-- ) args[ len ] = arguments[ len ];
 
       var result = original.apply(this, args);
-      var ob = this.__ob__;
+	  var ob = this.__ob__;
+	  console.log(this,typeof this)
       var inserted;
       switch (method) {
         case 'push':
@@ -893,8 +894,10 @@
           break
       }
       if (inserted) { ob.observeArray(inserted); }
-      // notify change
-      ob.dep.notify();
+	  // notify change
+	  
+
+	  ob.dep.notify();
       return result
     });
   });

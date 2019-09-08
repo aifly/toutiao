@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js存在的问题</title>
+</head>
+<body>
+    <input type="text" id="txt1">+<input type="text" id="txt2"> = <span id='res'>?</span>
+    <div>
+        <button>计算</button>
+    </div>
+
+    <script>
+        window.onload = function(){
+            
+            var txt1 = document.getElementById('txt1')
+            var txt2 = document.getElementById('txt2')
+            var res = document.getElementById('res')
+            document.querySelector('button').onclick = function(){
+                var val1 = txt1.value;
+                var val2 = txt2.value;
+                res.innerHTML = val1 + val2;
+            }
+ 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>解码一个被编码过N次的url</title>
+</head>
+<body>
+	<script>
+
+		var targetUrl = 'http%252525253A%252525252F%252525252Fwww.baidu.com%252525253Ft%252525253D123';
+		function decodeUrl(targetUrl) {
+			if (decodeURIComponent(targetUrl) === targetUrl) {
+				return targetUrl;
+			} else {
+				return decodeUrl(decodeURIComponent(targetUrl));
+			}
+		}
+
+		console.log('解码一个被编码过N次的url => '+decodeUrl(targetUrl));
+
+		
+
+	</script>
+</body>
+</html>

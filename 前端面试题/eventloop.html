@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>event loop</title>
+	<style>
+		.box{
+			width: 200px;
+			height: 200px;
+			margin: 20px;
+			padding: 20px;
+			border:20px solid #000;
+			background: red;
+			box-sizing:border-box;
+
+		}
+	</style>
+</head>
+<body>
+
+	<div class="box">
+
+	</div>
+	<script>
+
+		/*
+			宏任务
+			微任务
+		*/
+		console.log(123);
+
+		setInterval(()=>{
+			console.log('setInterval');
+		},1000);
+
+		var p = new Promise((res,reject)=>{
+
+			res('resolve');
+
+			console.log(1111);
+
+		}).then((data)=>{
+
+			console.log(data);
+
+		});
+
+		//process.nextTick()//
+
+
+
+
+	</script>
+</body>
+</html>

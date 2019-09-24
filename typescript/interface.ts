@@ -15,7 +15,6 @@ document.body.innerHTML = greeter(user);
  */
 
 interface IAnimal{
-
 	walk():void;
 	weight:number;
 }
@@ -25,16 +24,14 @@ class Animal implements IAnimal{
     public name:string;
 	private age:number;
 
-	private weight:number;
+	public weight:number;
 	
 	constructor(name:string,age:number){
 		this.name = name;
 		this.age = age;
-	}
-
+	}      
 	walk(){
 		
 	}
-	
 }
 

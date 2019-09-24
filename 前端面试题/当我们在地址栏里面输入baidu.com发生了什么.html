@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>浏览器渲染过程</title>
+</head>
+<body>
+    <script>
+        var s = `
+            1、dns解析，将域名解析为ip地址
+                - 浏览器dns缓存
+                - 系统的dns缓存
+                - 路由器dns缓存
+                - 网络运营商dns缓存
+
+            2、建立起tcp连接，TCP三次握手
+                - 第一次握手，由浏览器发起，告诉服务器我要准备发请求了
+                - 第二次握手，由服务器发起，告诉浏览器我准备好了，你可以发请求了
+                - 第三次握手，由浏览器发起，我马上要发了，请准备好接收吧
+            3、发送请求
+                浏览器发送请求到服务器，http协议的通信内容
+            4、接受响应
+                -服务器处理浏览器提交过来的响应报文
+            5、处理响返回结果
+            6、渲染页面
+                -遇见了html,浏览器会默认调用html解析器生成对应的token，构建dom树
+                -遇见style或者Link的时候，浏览器会调用css解析器，构建cssom树。
+                -遇见了script标签，浏览器会调用js的解析器，进行一系列的dom操作。
+                -将dom树和cssom树合并成一个渲染树
+                -根据渲染树生成布局，计算每一个节点的几何信息
+                -最后将渲染树绘制到屏幕上
+            
+            这五个步骤可能多次执行
+        `;    
+
+        document.body.innerHTML = s;
+    </script>
+</body>
+</html>

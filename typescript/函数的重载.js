@@ -1,3 +1,4 @@
+"use strict";
 function getInfo(obj) {
     if (typeof obj === 'string') {
         console.log(obj);

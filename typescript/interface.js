@@ -1,3 +1,4 @@
+"use strict";
 /* interface IPerson {
     firstName: string;
     lastName: string;

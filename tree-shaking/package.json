@@ -22,7 +22,7 @@
     "babel-preset-env": "^1.7.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.11",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "^4.17.21",
     "webpack-cli": "^3.3.0",
     "webpack-deep-scope-plugin": "^1.6.1"
   }
